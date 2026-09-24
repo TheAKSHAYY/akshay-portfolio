@@ -73,7 +73,7 @@ function StillBuildingSection() {
         </div>
 
         <div className="ep-still-devanagari" title="Still learning, still building">
-          [अभी भी सीख रहा हूँ · अभी भी बना रहा हूँ]
+          
         </div>
       </div>
     </section>

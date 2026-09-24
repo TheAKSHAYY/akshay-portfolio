@@ -10,7 +10,7 @@ const devLog = [
     tag: 'foundation',
   },
   {
-    step: '02', id: 'first-builds', year: '2023',
+    step: '02', id: 'first-builds', year: '2024',
     title: 'FIRST BUILDS',
     status: 'DONE', statusClass: 'ep-log-done',
     headline: 'Started building practical web and Android projects.',
@@ -18,15 +18,15 @@ const devLog = [
     tag: 'done',
   },
   {
-    step: '03', id: 'xrounder', year: '2024',
+    step: '03', id: 'xrounder', year: '2026',
     title: 'XROUNDER',
     status: 'SHIPPED', statusClass: 'ep-log-shipping',
     headline: 'Built a learning platform for BCA students.',
     body: 'XRounder shipped to production on Vercel. An all-in-one learning platform for BCA students — semester-wise content, notes, quizzes, previous papers, and exam prep. React + Supabase. Live and growing.',
-    tag: 'shipped', devanagari: '[बनाया और भेजा]',
+    tag: 'shipped',
   },
   {
-    step: '04', id: 'weblength', year: '2024',
+    step: '04', id: 'weblength', year: '2026',
     title: 'WEBLENGTH',
     status: 'SHIPPED', statusClass: 'ep-log-shipping',
     headline: 'Built an AI-powered YouTube creator growth product.',
@@ -34,7 +34,7 @@ const devLog = [
     tag: 'shipped',
   },
   {
-    step: '05', id: 'dsa', year: '2024',
+    step: '05', id: 'dsa', year: '2026',
     title: 'DSA — DAILY PRACTICE',
     status: 'IN PROGRESS', statusClass: 'ep-log-progress',
     headline: 'Arrays. Sorting. Two Pointers.',

@@ -8,6 +8,7 @@ import DevLogSection from './components/DevLogSection'
 import StillBuildingSection from './components/StillBuildingSection'
 import TheLastFrameSection from './components/TheLastFrameSection'
 import CustomCursor from './components/CustomCursor'
+import BackToTop from './components/BackToTop'
 import './styles.css'
 import './editorial_lower.css'
 import './evidence_room.css'
@@ -80,6 +81,7 @@ export default function App() {
       </main>
 
       <TheLastFrameSection />
+      <BackToTop />
     </div>
   )
 }
