@@ -127,7 +127,7 @@ function TheStackSection() {
         </h2>
         <p className="ep-stack-lead">
           Core technologies, foundational languages, and architectural tools.
-          <span className="ep-stack-lead-hint"> Click any skill to expand.</span>
+          <span className="ep-stack-lead-hint"></span>
         </p>
       </div>
 
