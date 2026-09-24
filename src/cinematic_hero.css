@@ -306,7 +306,6 @@
   user-select: none;
   display: flex;
   justify-content: center;
-  transition: transform 0.1s linear, opacity 0.1s linear;
 }
 
 .giant-name-row {
@@ -362,7 +361,6 @@
   inset: 0;
   z-index: 12;
   pointer-events: none;
-  transition: transform 0.1s linear;
 }
 
 .editorial-meta-box {
