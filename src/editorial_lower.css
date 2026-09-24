@@ -1,0 +1,1573 @@
+/* ==========================================================================
+   EDITORIAL LOWER SECTIONS — MASTER CINEMATIC DESIGN SYSTEM
+   Chapters: 01 THE PERSON · 02 SELECTED WORK · 03 THE STACK
+             04 DEVELOPMENT LOG · 05 STILL BUILDING · 06 THE LAST FRAME
+   Colors: #080808 · #F1F0EB · #A90F18 · #171717 · #77736D
+   Fonts:  Bodoni Moda (serif) · JetBrains Mono (mono) · Plus Jakarta Sans (sans)
+   ========================================================================== */
+
+/* ─────────────────────────────────────────────────────
+   SHARED / GLOBAL EDITORIAL TOKENS
+───────────────────────────────────────────────────── */
+
+.ep-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #080808;
+  color: #F1F0EB;
+}
+
+/* Film grain overlay — shared across all sections */
+.ep-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Registration marks */
+.ep-reg-mark {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: rgba(241, 240, 235, 0.15);
+  pointer-events: none;
+  letter-spacing: 0;
+}
+.ep-reg-tl { top: 1.5rem; left: 1.5rem; }
+.ep-reg-tr { top: 1.5rem; right: 1.5rem; }
+.ep-reg-br { bottom: 1.5rem; right: 1.5rem; }
+
+/* Chapter eyebrow — reused across all chapters */
+.ep-chapter-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.ep-chapter-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #A90F18;
+  letter-spacing: 0.12em;
+}
+
+.ep-chapter-rule {
+  flex: 0 0 40px;
+  height: 1px;
+  background: rgba(241, 240, 235, 0.25);
+}
+
+.ep-chapter-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: rgba(241, 240, 235, 0.5);
+  text-transform: uppercase;
+}
+
+/* Shared section rule / footer bar */
+.ep-section-rule {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 5rem;
+  padding: 0 clamp(2rem, 6vw, 7rem);
+}
+.ep-rule-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(241, 240, 235, 0.12);
+}
+.ep-rule-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: rgba(241, 240, 235, 0.3);
+  white-space: nowrap;
+}
+
+/* Crimson accent */
+.ep-crimson {
+  color: #A90F18;
+}
+
+/* Arrow micro-interaction */
+.ep-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+a:hover .ep-arrow,
+button:hover .ep-arrow {
+  transform: translate(2px, -2px);
+}
+
+
+/* ─────────────────────────────────────────────────────
+   01 / THE PERSON
+───────────────────────────────────────────────────── */
+
+.ep-person-section {
+  padding: clamp(5rem, 10vh, 8rem) 0 clamp(4rem, 8vh, 7rem);
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+.ep-person-inner {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 7rem);
+  padding: 0 clamp(2rem, 6vw, 7rem);
+  align-items: start;
+}
+
+/* LEFT — Massive magazine headline */
+.ep-person-left {
+  position: relative;
+}
+
+.ep-person-headline {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  line-height: 0.88;
+  margin: 0 0 2rem;
+  letter-spacing: -0.02em;
+}
+
+.ep-headline-not {
+  display: block;
+  font-size: clamp(5rem, 11vw, 11rem);
+  font-weight: 900;
+  font-style: italic;
+  color: #F1F0EB;
+}
+
+.ep-headline-just {
+  display: block;
+  font-size: clamp(5rem, 11vw, 11rem);
+  font-weight: 900;
+  font-style: italic;
+  color: rgba(241, 240, 235, 0.3);
+}
+
+.ep-headline-code {
+  display: block;
+  font-size: clamp(5.5rem, 12vw, 12rem);
+  font-weight: 900;
+  font-style: italic;
+  color: #A90F18;
+}
+
+/* Archival strip */
+.ep-archival-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(241, 240, 235, 0.45);
+  border-top: 1px solid rgba(241, 240, 235, 0.12);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.ep-strip-item {
+  color: rgba(241, 240, 235, 0.65);
+}
+
+.ep-strip-sep {
+  color: #A90F18;
+}
+
+.ep-strip-devanagari {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  color: rgba(169, 15, 24, 0.7);
+  font-size: 0.65rem;
+}
+
+/* RIGHT — Narrative */
+.ep-person-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: clamp(2rem, 5vw, 5rem);
+}
+
+.ep-person-pull-quote {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-style: italic;
+  font-weight: 500;
+  color: #F1F0EB;
+  line-height: 1.45;
+  border-left: 3px solid #A90F18;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.ep-person-bio-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ep-person-body {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.88rem, 1.4vw, 1.02rem);
+  line-height: 1.75;
+  color: rgba(241, 240, 235, 0.72);
+  margin: 0;
+}
+
+.ep-person-body strong {
+  color: #F1F0EB;
+  font-weight: 600;
+}
+
+/* Focus block */
+.ep-focus-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.ep-focus-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: rgba(241, 240, 235, 0.4);
+}
+
+.ep-focus-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ep-focus-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.9rem;
+  color: rgba(241, 240, 235, 0.8);
+}
+
+.ep-focus-bullet {
+  color: #A90F18;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Destination card */
+.ep-destination-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid rgba(169, 15, 24, 0.3);
+  border-left: 3px solid #A90F18;
+  padding: 1.25rem 1.5rem;
+  background: rgba(169, 15, 24, 0.04);
+}
+
+.ep-dest-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #A90F18;
+}
+
+.ep-dest-title {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+  font-weight: 700;
+  color: #F1F0EB;
+  letter-spacing: 0.04em;
+}
+
+.ep-dest-sub {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  color: rgba(241, 240, 235, 0.45);
+  letter-spacing: 0.1em;
+}
+
+/* Responsive: stack columns on mobile */
+@media (max-width: 768px) {
+  .ep-person-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .ep-headline-not,
+  .ep-headline-just {
+    font-size: clamp(3.5rem, 14vw, 6rem);
+  }
+  .ep-headline-code {
+    font-size: clamp(4rem, 15vw, 7rem);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────
+   02 / SELECTED WORK
+───────────────────────────────────────────────────── */
+
+.ep-work-section {
+  padding: clamp(5rem, 10vh, 8rem) 0 0;
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+/* Header */
+.ep-work-header {
+  position: relative;
+  z-index: 10;
+  padding: 0 clamp(2rem, 6vw, 7rem) clamp(3rem, 5vw, 5rem);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  row-gap: 1rem;
+  column-gap: 3rem;
+  align-items: start;
+}
+
+.ep-work-header .ep-chapter-eyebrow {
+  grid-column: 1 / -1;
+}
+
+.ep-work-mega-title {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  line-height: 0.88;
+  margin: 0;
+  letter-spacing: -0.02em;
+  grid-column: 1;
+}
+
+.ep-work-title-built {
+  display: block;
+  font-size: clamp(4rem, 9vw, 9rem);
+  font-weight: 900;
+  font-style: italic;
+  color: rgba(241, 240, 235, 0.3);
+}
+
+.ep-work-title-different {
+  display: block;
+  font-size: clamp(4.5rem, 10vw, 10rem);
+  font-weight: 900;
+  font-style: italic;
+  color: #F1F0EB;
+}
+
+.ep-work-lead {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.88rem, 1.4vw, 1.05rem);
+  color: rgba(241, 240, 235, 0.65);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 480px;
+  grid-column: 1;
+}
+
+.ep-work-lead em {
+  font-style: normal;
+  color: #F1F0EB;
+}
+
+.ep-work-github-stamp {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(241, 240, 235, 0.2);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  align-self: center;
+}
+
+.ep-stamp-border {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: rgba(241, 240, 235, 0.5);
+  display: block;
+  border-bottom: 1px solid rgba(241, 240, 235, 0.15);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.ep-stamp-sub {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #A90F18;
+}
+
+/* ── Poster Stack ── */
+.ep-poster-stack {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Individual poster */
+.ep-poster {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 6vw, 7rem);
+  border-top: 1px solid rgba(241, 240, 235, 0.07);
+  background: #080808;
+  transition: background 0.4s ease;
+  cursor: default;
+}
+
+.ep-poster:hover {
+  background: #0e0e0e;
+}
+
+/* Alternating ivory stripe on odd posters */
+.ep-poster-idx-1,
+.ep-poster-idx-3 {
+  background: #0a0908;
+}
+
+.ep-poster-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.ep-poster-border {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(241, 240, 235, 0.04);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Topbar */
+.ep-poster-topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ep-poster-num-block {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.ep-poster-big-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: rgba(169, 15, 24, 0.5);
+  line-height: 1;
+}
+
+.ep-poster-category {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: rgba(241, 240, 235, 0.4);
+  text-transform: uppercase;
+}
+
+.ep-poster-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ep-poster-devanagari {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: rgba(169, 15, 24, 0.55);
+  letter-spacing: 0.05em;
+}
+
+.ep-poster-gh-btn {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: rgba(241, 240, 235, 0.5);
+  text-decoration: none;
+  border: 1px solid rgba(241, 240, 235, 0.18);
+  padding: 0.35rem 0.85rem;
+  transition: color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ep-poster-gh-btn:hover {
+  color: #F1F0EB;
+  border-color: rgba(241, 240, 235, 0.5);
+}
+
+/* Poster body — two columns */
+.ep-poster-body {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.ep-poster-title-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ep-poster-title {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-weight: 900;
+  font-style: italic;
+  color: #F1F0EB;
+  line-height: 0.95;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ep-poster-tagline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #A90F18;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.ep-poster-desc {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.85rem, 1.3vw, 0.98rem);
+  line-height: 1.7;
+  color: rgba(241, 240, 235, 0.65);
+  margin: 0;
+  max-width: 600px;
+}
+
+/* Meta column */
+.ep-poster-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 220px;
+  max-width: 280px;
+}
+
+.ep-poster-stat-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ep-poster-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border-left: 2px solid rgba(169, 15, 24, 0.3);
+  padding-left: 0.75rem;
+}
+
+.ep-stat-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: rgba(241, 240, 235, 0.35);
+  text-transform: uppercase;
+}
+
+.ep-stat-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #F1F0EB;
+  letter-spacing: 0.05em;
+}
+
+.ep-poster-tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ep-tech-tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(241, 240, 235, 0.6);
+  border: 1px solid rgba(241, 240, 235, 0.15);
+  padding: 0.2rem 0.55rem;
+}
+
+.ep-poster-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ep-poster-primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: rgba(241, 240, 235, 0.06);
+  border: 1px solid rgba(241, 240, 235, 0.2);
+  color: #F1F0EB;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.ep-poster-primary-btn:hover {
+  background: rgba(241, 240, 235, 0.12);
+  border-color: rgba(241, 240, 235, 0.45);
+}
+
+.ep-poster-live-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: rgba(169, 15, 24, 0.1);
+  border: 1px solid rgba(169, 15, 24, 0.4);
+  color: #A90F18;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.ep-poster-live-btn:hover {
+  background: rgba(169, 15, 24, 0.18);
+  border-color: #A90F18;
+}
+
+/* Work section footer */
+.ep-work-footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem clamp(2rem, 6vw, 7rem);
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  background: rgba(241, 240, 235, 0.02);
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.ep-work-footer-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(241, 240, 235, 0.35);
+}
+
+.ep-work-all-repos-btn {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(241, 240, 235, 0.65);
+  text-decoration: none;
+  border: 1px solid rgba(241, 240, 235, 0.2);
+  padding: 0.5rem 1.25rem;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.ep-work-all-repos-btn:hover {
+  color: #F1F0EB;
+  border-color: rgba(241, 240, 235, 0.5);
+}
+
+@media (max-width: 768px) {
+  .ep-work-header {
+    grid-template-columns: 1fr;
+  }
+  .ep-work-github-stamp {
+    display: none;
+  }
+  .ep-poster-body {
+    grid-template-columns: 1fr;
+  }
+  .ep-poster-meta-col {
+    max-width: 100%;
+    min-width: unset;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────
+   03 / THE STACK
+───────────────────────────────────────────────────── */
+
+.ep-stack-section {
+  padding: clamp(5rem, 10vh, 8rem) 0 clamp(4rem, 8vh, 7rem);
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+.ep-stack-header {
+  position: relative;
+  z-index: 10;
+  padding: 0 clamp(2rem, 6vw, 7rem) clamp(3rem, 5vw, 5rem);
+}
+
+.ep-stack-mega-title {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  line-height: 0.88;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.02em;
+  font-size: clamp(4rem, 9vw, 9rem);
+  font-weight: 900;
+  font-style: italic;
+  color: #F1F0EB;
+}
+
+.ep-stack-lead {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.88rem, 1.4vw, 1.02rem);
+  color: rgba(241, 240, 235, 0.65);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 500px;
+}
+
+.ep-stack-lead-hint {
+  color: rgba(241, 240, 235, 0.35);
+}
+
+/* Stack index rows */
+.ep-stack-index {
+  position: relative;
+  z-index: 10;
+}
+
+.ep-stack-row {
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  padding: 1.5rem clamp(2rem, 6vw, 7rem);
+  cursor: pointer;
+  transition: background 0.25s ease;
+  outline: none;
+}
+
+.ep-stack-row:last-child {
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+.ep-stack-row:hover {
+  background: rgba(241, 240, 235, 0.025);
+}
+
+.ep-stack-row-open {
+  background: rgba(169, 15, 24, 0.04);
+}
+
+.ep-stack-row-head {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ep-stack-row-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: #A90F18;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.ep-stack-row-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ep-stack-row-name {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  color: #F1F0EB;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ep-stack-devanagari-badge {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: rgba(169, 15, 24, 0.7);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.ep-stack-row-tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: rgba(241, 240, 235, 0.35);
+  text-transform: uppercase;
+}
+
+.ep-stack-row-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ep-stack-row-role {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(241, 240, 235, 0.45);
+  text-transform: uppercase;
+}
+
+.ep-stack-toggle {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.1rem;
+  color: rgba(241, 240, 235, 0.4);
+  width: 1.5rem;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.ep-stack-row-open .ep-stack-toggle {
+  color: #A90F18;
+}
+
+.ep-stack-accent-line {
+  height: 1px;
+  background: rgba(241, 240, 235, 0.05);
+  margin: 1rem 0 0;
+}
+
+.ep-stack-row-open .ep-stack-accent-line {
+  background: rgba(169, 15, 24, 0.2);
+}
+
+/* Drawer */
+.ep-stack-drawer {
+  padding: 1.5rem 0 0.5rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 3rem;
+}
+
+.ep-stack-desc {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.9rem;
+  line-height: 1.72;
+  color: rgba(241, 240, 235, 0.7);
+  margin: 0;
+  grid-column: 1 / -1;
+}
+
+.ep-stack-topics {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.ep-stack-topic {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  color: rgba(241, 240, 235, 0.6);
+}
+
+.ep-topic-dash {
+  color: #A90F18;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .ep-stack-row-head {
+    grid-template-columns: 2rem 1fr;
+  }
+  .ep-stack-row-right { display: none; }
+  .ep-stack-drawer {
+    padding-left: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  .ep-stack-topics {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────
+   04 / DEVELOPMENT LOG
+───────────────────────────────────────────────────── */
+
+.ep-devlog-section {
+  padding: clamp(5rem, 10vh, 8rem) 0 clamp(5rem, 10vh, 8rem);
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+.ep-devlog-header {
+  position: relative;
+  z-index: 10;
+  padding: 0 clamp(2rem, 6vw, 7rem) clamp(3rem, 5vw, 5rem);
+}
+
+.ep-devlog-title {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: clamp(4rem, 9vw, 9rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: #F1F0EB;
+  margin: 0 0 1.5rem;
+}
+
+.ep-devlog-lead {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.88rem, 1.4vw, 1.02rem);
+  color: rgba(241, 240, 235, 0.65);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Timeline */
+.ep-timeline-wrap {
+  position: relative;
+  z-index: 10;
+  padding: 0 clamp(2rem, 6vw, 7rem);
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 2.5rem;
+}
+
+/* Drawing line track */
+.ep-timeline-track {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.4rem;
+}
+
+.ep-timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background: rgba(241, 240, 235, 0.08);
+}
+
+.ep-timeline-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(to bottom, #A90F18, rgba(169, 15, 24, 0.3));
+  transition: height 0.1s linear;
+  max-height: 100%;
+}
+
+/* Entries */
+.ep-timeline-entries {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ep-log-entry {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(241, 240, 235, 0.06);
+  position: relative;
+}
+
+.ep-log-entry:last-child {
+  border-bottom: none;
+}
+
+.ep-log-node-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.25rem;
+}
+
+.ep-log-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(241, 240, 235, 0.25);
+  background: #080808;
+  flex-shrink: 0;
+}
+
+.ep-log-done .ep-log-node {
+  border-color: #A90F18;
+  background: #A90F18;
+}
+
+.ep-log-progress .ep-log-node {
+  border-color: #A90F18;
+  background: rgba(169, 15, 24, 0.3);
+  box-shadow: 0 0 0 3px rgba(169, 15, 24, 0.1);
+  animation: ep-pulse 2s ease-in-out infinite;
+}
+
+.ep-log-shipping .ep-log-node {
+  border-color: #F1F0EB;
+  background: rgba(241, 240, 235, 0.8);
+}
+
+.ep-log-next .ep-log-node {
+  border-color: rgba(241, 240, 235, 0.2);
+  background: transparent;
+}
+
+@keyframes ep-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(169, 15, 24, 0.1); }
+  50% { box-shadow: 0 0 0 6px rgba(169, 15, 24, 0.05); }
+}
+
+.ep-log-year {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(241, 240, 235, 0.3);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.ep-log-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ep-log-top-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ep-log-step {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(241, 240, 235, 0.3);
+}
+
+.ep-log-status-chip {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 2px;
+}
+
+.ep-log-done.ep-log-status-chip,
+.ep-log-entry.ep-log-done .ep-log-status-chip {
+  background: rgba(169, 15, 24, 0.15);
+  color: #A90F18;
+  border: 1px solid rgba(169, 15, 24, 0.3);
+}
+
+.ep-log-entry.ep-log-progress .ep-log-status-chip {
+  background: rgba(169, 15, 24, 0.1);
+  color: rgba(169, 15, 24, 0.85);
+  border: 1px solid rgba(169, 15, 24, 0.2);
+}
+
+.ep-log-entry.ep-log-shipping .ep-log-status-chip {
+  background: rgba(241, 240, 235, 0.1);
+  color: #F1F0EB;
+  border: 1px solid rgba(241, 240, 235, 0.25);
+}
+
+.ep-log-entry.ep-log-next .ep-log-status-chip {
+  background: transparent;
+  color: rgba(241, 240, 235, 0.3);
+  border: 1px solid rgba(241, 240, 235, 0.12);
+}
+
+.ep-log-title {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 800;
+  color: #F1F0EB;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ep-log-next .ep-log-title {
+  color: rgba(241, 240, 235, 0.45);
+}
+
+.ep-log-headline {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+  color: rgba(241, 240, 235, 0.55);
+  margin: 0;
+}
+
+.ep-log-body {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: rgba(241, 240, 235, 0.6);
+  margin: 0;
+  max-width: 580px;
+}
+
+.ep-log-devanagari {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: rgba(169, 15, 24, 0.55);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .ep-timeline-wrap {
+    grid-template-columns: 0 1fr;
+  }
+  .ep-timeline-track { display: none; }
+  .ep-log-entry {
+    grid-template-columns: 1fr;
+  }
+  .ep-log-node-wrap { display: none; }
+}
+
+
+/* ─────────────────────────────────────────────────────
+   05 / STILL BUILDING
+───────────────────────────────────────────────────── */
+
+.ep-still-section {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+  background: #171717;
+}
+
+.ep-still-inner {
+  position: relative;
+  z-index: 10;
+  padding: clamp(5rem, 10vh, 9rem) clamp(2rem, 6vw, 7rem);
+  max-width: 900px;
+  width: 100%;
+}
+
+.ep-still-eyebrow {
+  margin-bottom: 3rem;
+}
+
+.ep-still-headline {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  margin: 0 0 3rem;
+}
+
+/* Animate in on scroll */
+.ep-still-line-1 {
+  display: block;
+  font-size: clamp(4.5rem, 12vw, 11rem);
+  color: rgba(241, 240, 235, 0.18);
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+}
+.ep-still-line-2 {
+  display: block;
+  font-size: clamp(4.5rem, 12vw, 11rem);
+  color: rgba(241, 240, 235, 0.55);
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s;
+}
+.ep-still-line-3 {
+  display: block;
+  font-size: clamp(4.5rem, 12vw, 11rem);
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s;
+}
+
+.ep-visible .ep-still-line-1,
+.ep-visible .ep-still-line-2,
+.ep-visible .ep-still-line-3 {
+  opacity: 1;
+  transform: none;
+}
+
+/* Also apply to still headline when section is visible */
+.ep-still-section.ep-visible .ep-still-line-1 {
+  opacity: 1;
+  transform: none;
+}
+.ep-still-section.ep-visible .ep-still-line-2 {
+  opacity: 1;
+  transform: none;
+}
+.ep-still-section.ep-visible .ep-still-line-3 {
+  opacity: 1;
+  transform: none;
+}
+
+.ep-still-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.ep-still-para {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(241, 240, 235, 0.65);
+  margin: 0;
+  max-width: 540px;
+}
+
+.ep-still-currently-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 540px) {
+  .ep-still-currently-grid { grid-template-columns: 1fr; }
+}
+
+.ep-currently-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border-left: 2px solid rgba(169, 15, 24, 0.35);
+  padding-left: 0.9rem;
+}
+
+.ep-currently-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  color: rgba(241, 240, 235, 0.3);
+  text-transform: uppercase;
+}
+
+.ep-currently-val {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F1F0EB;
+}
+
+.ep-still-devanagari {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: rgba(169, 15, 24, 0.5);
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  padding-top: 1.5rem;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   06 / THE LAST FRAME
+───────────────────────────────────────────────────── */
+
+.ep-lastframe-section {
+  background: #080808;
+  padding-bottom: 0;
+}
+
+.ep-lastframe-inner {
+  position: relative;
+  z-index: 10;
+  padding: clamp(5rem, 10vh, 8rem) clamp(2rem, 6vw, 7rem) 0;
+}
+
+/* Headline */
+.ep-lastframe-headline {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  margin: 0 0 2rem;
+}
+
+.ep-lf-lets {
+  display: block;
+  font-size: clamp(4rem, 10vw, 10rem);
+  color: rgba(241, 240, 235, 0.3);
+}
+
+.ep-lf-build {
+  display: block;
+  font-size: clamp(4.5rem, 11vw, 11rem);
+}
+
+.ep-lastframe-sub {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  color: rgba(241, 240, 235, 0.65);
+  line-height: 1.7;
+  margin: 0 0 3.5rem;
+  max-width: 520px;
+}
+
+.ep-lf-devanagari {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.7rem;
+  color: rgba(169, 15, 24, 0.55);
+  letter-spacing: 0.05em;
+}
+
+/* Email block */
+.ep-email-block {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  border-bottom: 1px solid rgba(241, 240, 235, 0.08);
+}
+
+.ep-email-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.ep-email-addr {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+  font-weight: 600;
+  color: #F1F0EB;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+.ep-email-link:hover .ep-email-addr {
+  color: #A90F18;
+}
+
+.ep-email-arrow {
+  font-size: 1.1rem;
+  color: rgba(241, 240, 235, 0.5);
+  transition: transform 0.2s;
+}
+
+.ep-email-link:hover .ep-email-arrow {
+  transform: translate(2px, -2px);
+  color: #A90F18;
+}
+
+.ep-email-copy-btn {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(241, 240, 235, 0.55);
+  background: transparent;
+  border: 1px solid rgba(241, 240, 235, 0.2);
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.ep-email-copy-btn:hover {
+  color: #F1F0EB;
+  border-color: rgba(241, 240, 235, 0.45);
+  background: rgba(241, 240, 235, 0.04);
+}
+
+/* Social grid */
+.ep-social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+@media (max-width: 640px) {
+  .ep-social-grid { grid-template-columns: 1fr; }
+}
+
+.ep-social-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid rgba(241, 240, 235, 0.1);
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.ep-social-card:hover {
+  border-color: rgba(241, 240, 235, 0.3);
+  background: rgba(241, 240, 235, 0.03);
+}
+
+.ep-social-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ep-social-name {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(241, 240, 235, 0.55);
+}
+
+.ep-social-arrow {
+  font-size: 1rem;
+  color: rgba(241, 240, 235, 0.3);
+  transition: transform 0.2s, color 0.2s;
+}
+
+.ep-social-card:hover .ep-social-arrow {
+  transform: translate(2px, -2px);
+  color: #A90F18;
+}
+
+.ep-social-handle {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  font-weight: 700;
+  color: #F1F0EB;
+}
+
+.ep-social-note {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(241, 240, 235, 0.45);
+  margin: 0;
+}
+
+/* Credits bar */
+.ep-credits-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  background: rgba(241, 240, 235, 0.015);
+}
+
+.ep-credits-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ep-credits-name {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: rgba(241, 240, 235, 0.75);
+}
+
+.ep-credits-sep {
+  color: rgba(241, 240, 235, 0.2);
+}
+
+.ep-credits-tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(241, 240, 235, 0.35);
+}
+
+.ep-credits-location {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  color: rgba(241, 240, 235, 0.4);
+}
+
+.ep-credits-right {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: rgba(241, 240, 235, 0.2);
+}

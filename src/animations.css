@@ -1,0 +1,1064 @@
+/* ==========================================================================
+   CINEMATIC ANIMATION LAYER — PREMIUM MOTION DESIGN
+   Scroll-triggered reveals · Staggered typewriter · Magnetic hovers
+   Glitch effects · Film reel transitions · Parallax text
+   ========================================================================== */
+
+
+/* ─────────────────────────────────────────────────────
+   KEYFRAME LIBRARY
+───────────────────────────────────────────────────── */
+
+/* Cinematic fade-up (primary entrance) */
+@keyframes ep-fadeUp {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade-left (text lines, from left edge) */
+@keyframes ep-fadeLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Fade-right */
+@keyframes ep-fadeRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Scale-in (chapter numbers, stamps) */
+@keyframes ep-scaleIn {
+  from { opacity: 0; transform: scale(0.72); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Clip reveal — text slides in from masked left edge */
+@keyframes ep-clipReveal {
+  from { clip-path: inset(0 100% 0 0); opacity: 1; }
+  to   { clip-path: inset(0 0% 0 0); opacity: 1; }
+}
+
+/* Crimson underline draw (horizontal rule growth) */
+@keyframes ep-lineGrow {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Line grow from center */
+@keyframes ep-lineGrowCenter {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Slow float — chapter numbers, reg marks */
+@keyframes ep-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Glitch slice (applied to big headings on hover) */
+@keyframes ep-glitch-1 {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(40% 0 40% 0); transform: translate(4px, 0); }
+  40%  { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+  60%  { clip-path: inset(10% 0 70% 0); transform: translate(3px, 0); }
+  80%  { clip-path: inset(50% 0 30% 0); transform: translate(-3px, 0); }
+  100% { clip-path: inset(0% 0 100% 0); transform: translate(0, 0); }
+}
+@keyframes ep-glitch-2 {
+  0%   { clip-path: inset(70% 0 10% 0); transform: translate(4px, 0); color: #A90F18; }
+  25%  { clip-path: inset(30% 0 50% 0); transform: translate(-4px, 0); color: #F1F0EB; }
+  50%  { clip-path: inset(80% 0 5%  0); transform: translate(2px, 0);  color: #A90F18; }
+  75%  { clip-path: inset(15% 0 65% 0); transform: translate(-2px, 0); color: #F1F0EB; }
+  100% { clip-path: inset(100% 0 0% 0); transform: translate(0, 0); }
+}
+
+/* Scanline sweep (decorative overlay animation) */
+@keyframes ep-scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Number count-up shimmer */
+@keyframes ep-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Border trace animation */
+@keyframes ep-borderTrace {
+  0%   { clip-path: inset(0 100% 100% 0); }
+  25%  { clip-path: inset(0 0% 100% 0); }
+  50%  { clip-path: inset(0 0% 0% 0); }
+  75%  { clip-path: inset(0 0% 0% 100%); }
+  100% { clip-path: inset(0 0% 0% 0); }
+}
+
+/* Pulse crimson glow */
+@keyframes ep-glowPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(169, 15, 24, 0); }
+  50%       { box-shadow: 0 0 24px rgba(169, 15, 24, 0.2), 0 0 48px rgba(169, 15, 24, 0.06); }
+}
+
+/* Typewriter cursor blink */
+@keyframes ep-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Ticker scroll — marquee-style bottom strips */
+@keyframes ep-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Stack row shimmer on hover */
+@keyframes ep-rowShimmer {
+  from { background-position: -100% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* Subtle rotate entrance (stamps, badges) */
+@keyframes ep-rotateIn {
+  from { opacity: 0; transform: rotate(-8deg) scale(0.8); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+
+/* Vertical text scroll (log years) */
+@keyframes ep-vertSlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────────────
+   SCROLL REVEAL SYSTEM — [data-reveal] attribute
+   Apply via JS IntersectionObserver or CSS :hover
+───────────────────────────────────────────────────── */
+
+/* Base hidden state for all animated elements */
+[data-reveal] {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+[data-reveal="fade-up"] {
+  transform: translateY(48px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="fade-left"] {
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="fade-right"] {
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="scale-in"] {
+  transform: scale(0.8);
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-reveal="clip"] {
+  clip-path: inset(0 100% 0 0);
+  opacity: 1 !important;
+  transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Revealed state */
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0% 0 0);
+}
+
+
+/* ─────────────────────────────────────────────────────
+   CHAPTER EYEBROW — animated entrance
+───────────────────────────────────────────────────── */
+
+.ep-chapter-num {
+  transition: color 0.3s ease, letter-spacing 0.4s ease;
+}
+
+.ep-section:hover .ep-chapter-num {
+  letter-spacing: 0.2em;
+}
+
+.ep-chapter-rule {
+  transform-origin: left;
+  animation: ep-lineGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-play-state: paused;
+}
+
+.ep-is-visible .ep-chapter-rule {
+  animation-play-state: running;
+}
+
+/* Animated chapter label — letter spacing expand */
+.ep-chapter-label {
+  transition: letter-spacing 0.5s ease, color 0.3s ease;
+}
+
+.ep-is-visible .ep-chapter-label {
+  letter-spacing: 0.28em;
+  color: rgba(241, 240, 235, 0.65);
+}
+
+
+/* ─────────────────────────────────────────────────────
+   01 / THE PERSON — Enhanced Animations
+───────────────────────────────────────────────────── */
+
+/* Massive headline — line-by-line staggered reveal */
+.ep-headline-not,
+.ep-headline-just,
+.ep-headline-code {
+  display: block;
+  opacity: 0;
+  transform: translateY(60px) skewY(2deg);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.ep-is-visible .ep-headline-not {
+  opacity: 1; transform: none; transition-delay: 0s;
+}
+.ep-is-visible .ep-headline-just {
+  opacity: 0.3; transform: none; transition-delay: 0.12s;
+}
+.ep-is-visible .ep-headline-code {
+  opacity: 1; transform: none; transition-delay: 0.24s;
+}
+
+/* Glitch effect on headline hover */
+.ep-person-headline {
+  position: relative;
+  cursor: default;
+}
+
+.ep-headline-code {
+  position: relative;
+}
+
+.ep-headline-code::before,
+.ep-headline-code::after {
+  content: 'CODE.';
+  position: absolute;
+  left: 0; top: 0;
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: inherit;
+  font-weight: 900;
+  font-style: italic;
+  line-height: inherit;
+  letter-spacing: inherit;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.ep-headline-code::before { color: #ff2244; }
+.ep-headline-code::after  { color: #00d4ff; mix-blend-mode: screen; }
+
+.ep-person-headline:hover .ep-headline-code::before {
+  opacity: 0.7;
+  animation: ep-glitch-1 0.4s steps(1) both;
+}
+.ep-person-headline:hover .ep-headline-code::after {
+  opacity: 0.5;
+  animation: ep-glitch-2 0.4s steps(1) both;
+}
+
+/* Archival strip — scan-in animation */
+.ep-archival-strip {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s;
+}
+.ep-is-visible .ep-archival-strip {
+  opacity: 1; transform: none;
+}
+
+/* Strip items — hover shimmer */
+.ep-strip-item {
+  position: relative;
+  transition: color 0.25s ease;
+}
+.ep-strip-item::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 100%; height: 1px;
+  background: #A90F18;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.ep-strip-item:hover { color: #F1F0EB; }
+.ep-strip-item:hover::after { transform: scaleX(1); }
+
+/* Pull quote — slide from left with border grow */
+.ep-person-pull-quote {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  border-left-width: 0;
+}
+.ep-is-visible .ep-person-pull-quote {
+  opacity: 1; transform: none;
+  border-left-width: 3px;
+}
+
+/* Bio paragraphs — fade up staggered */
+.ep-person-body {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.ep-person-bio-cols .ep-person-body:nth-child(1) { transition-delay: 0.25s; }
+.ep-person-bio-cols .ep-person-body:nth-child(2) { transition-delay: 0.4s; }
+
+.ep-is-visible .ep-person-body {
+  opacity: 1; transform: none;
+}
+
+/* Focus list — staggered bullet reveals */
+.ep-focus-list li {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ep-focus-list li:nth-child(1) { transition-delay: 0.35s; }
+.ep-focus-list li:nth-child(2) { transition-delay: 0.45s; }
+.ep-focus-list li:nth-child(3) { transition-delay: 0.55s; }
+.ep-focus-list li:nth-child(4) { transition-delay: 0.65s; }
+
+.ep-is-visible .ep-focus-list li {
+  opacity: 1; transform: none;
+}
+
+/* Destination card — scale + glow entrance */
+.ep-destination-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s,
+              border-color 0.3s ease, background 0.3s ease;
+}
+.ep-is-visible .ep-destination-card {
+  opacity: 1; transform: none;
+}
+.ep-destination-card:hover {
+  background: rgba(169, 15, 24, 0.08);
+  border-color: rgba(169, 15, 24, 0.6);
+  animation: ep-glowPulse 2s ease-in-out infinite;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   02 / SELECTED WORK — Poster Animations
+───────────────────────────────────────────────────── */
+
+/* Header title stagger */
+.ep-work-title-built,
+.ep-work-title-different {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ep-work-title-built { transition-delay: 0s; }
+.ep-work-title-different { transition-delay: 0.15s; }
+
+.ep-is-visible .ep-work-title-built,
+.ep-is-visible .ep-work-title-different {
+  opacity: 1; transform: none;
+}
+.ep-is-visible .ep-work-title-built  { opacity: 0.3; }
+
+.ep-work-lead {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s;
+}
+.ep-is-visible .ep-work-lead { opacity: 1; transform: none; }
+
+.ep-work-github-stamp {
+  opacity: 0;
+  transform: rotate(-6deg) scale(0.85);
+  transition: opacity 0.6s ease 0.5s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+}
+.ep-is-visible .ep-work-github-stamp {
+  opacity: 1; transform: rotate(-2deg) scale(1);
+}
+.ep-work-github-stamp:hover {
+  transform: rotate(0deg) scale(1.04);
+}
+
+/* Individual poster — cinematic slide-in */
+.ep-poster {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s ease;
+}
+
+.ep-poster.ep-poster-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger each poster */
+.ep-poster-idx-0 { transition-delay: 0s; }
+.ep-poster-idx-1 { transition-delay: 0.08s; }
+.ep-poster-idx-2 { transition-delay: 0.16s; }
+.ep-poster-idx-3 { transition-delay: 0.24s; }
+.ep-poster-idx-4 { transition-delay: 0.32s; }
+
+/* Poster hover — lift with crimson glow */
+.ep-poster {
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.ep-poster:hover {
+  background: #0e0e0e;
+  box-shadow: inset 0 0 0 1px rgba(169, 15, 24, 0.2),
+              0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Poster title — magnetic hover scale */
+.ep-poster-title {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              letter-spacing 0.4s ease;
+}
+
+.ep-poster:hover .ep-poster-title {
+  transform: translateX(6px);
+  letter-spacing: 0.01em;
+}
+
+/* Big number — crimson reveal */
+.ep-poster-big-num {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.ep-poster:hover .ep-poster-big-num {
+  color: #A90F18;
+  transform: scale(1.08);
+}
+
+/* Tech tags — stagger on hover */
+.ep-tech-tag {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.ep-poster:hover .ep-tech-tag:nth-child(1) { transition-delay: 0s; }
+.ep-poster:hover .ep-tech-tag:nth-child(2) { transition-delay: 0.04s; }
+.ep-poster:hover .ep-tech-tag:nth-child(3) { transition-delay: 0.08s; }
+.ep-poster:hover .ep-tech-tag:nth-child(4) { transition-delay: 0.12s; }
+.ep-poster:hover .ep-tech-tag:nth-child(5) { transition-delay: 0.16s; }
+.ep-poster:hover .ep-tech-tag {
+  border-color: rgba(169, 15, 24, 0.4);
+  color: rgba(241, 240, 235, 0.9);
+  transform: translateY(-2px);
+}
+
+/* GitHub button — traceable border animation */
+.ep-poster-gh-btn {
+  position: relative;
+  overflow: hidden;
+}
+.ep-poster-gh-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(241, 240, 235, 0.06), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.ep-poster-gh-btn:hover::after {
+  transform: translateX(100%);
+}
+
+/* Live demo btn — pulse */
+.ep-poster-live-btn {
+  position: relative;
+  overflow: hidden;
+}
+.ep-poster-live-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: rgba(169, 15, 24, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+.ep-poster-live-btn:hover::before {
+  width: 300px; height: 300px;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   03 / THE STACK — Row Animations
+───────────────────────────────────────────────────── */
+
+.ep-stack-mega-title span {
+  display: block;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ep-stack-mega-title span:nth-child(1) { transition-delay: 0s; }
+.ep-stack-mega-title span:nth-child(2) { transition-delay: 0.15s; }
+
+.ep-is-visible .ep-stack-mega-title span {
+  opacity: 1; transform: none;
+}
+/* Second span (STACK.) stays ivory-full */
+.ep-is-visible .ep-stack-mega-title span:nth-child(1) { opacity: 1; }
+
+/* Stack rows — animated entrance */
+.ep-stack-row {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.25s ease;
+}
+
+.ep-stack-row.ep-row-revealed {
+  opacity: 1; transform: none;
+}
+
+/* Shimmer line on hover */
+.ep-stack-row {
+  background-size: 200% 100%;
+}
+
+.ep-stack-row:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(241, 240, 235, 0) 0%,
+    rgba(241, 240, 235, 0.025) 50%,
+    rgba(241, 240, 235, 0) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Row name — expand on hover */
+.ep-stack-row-name {
+  transition: letter-spacing 0.3s ease, color 0.2s ease;
+}
+.ep-stack-row:hover .ep-stack-row-name { letter-spacing: 0.04em; }
+.ep-stack-row-open .ep-stack-row-name { color: #F1F0EB; }
+
+/* Toggle icon — rotate */
+.ep-stack-toggle {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+}
+.ep-stack-row-open .ep-stack-toggle { transform: rotate(45deg); color: #A90F18; }
+
+/* Accent line — animate width */
+.ep-stack-accent-line {
+  transform-origin: left;
+  transition: transform 0.4s ease, background 0.3s ease;
+  transform: scaleX(0.3);
+}
+.ep-stack-row:hover .ep-stack-accent-line,
+.ep-stack-row-open .ep-stack-accent-line {
+  transform: scaleX(1);
+}
+
+/* Drawer — slide in */
+.ep-stack-drawer {
+  animation: ep-fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Topic chips — stagger */
+.ep-stack-topic {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: ep-fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ep-stack-topics .ep-stack-topic:nth-child(1) { animation-delay: 0.05s; }
+.ep-stack-topics .ep-stack-topic:nth-child(2) { animation-delay: 0.10s; }
+.ep-stack-topics .ep-stack-topic:nth-child(3) { animation-delay: 0.15s; }
+.ep-stack-topics .ep-stack-topic:nth-child(4) { animation-delay: 0.20s; }
+
+/* Devanagari badge — subtle pulse */
+.ep-stack-devanagari-badge {
+  animation: ep-blink 3s ease-in-out infinite;
+}
+
+/* Row number — count-up shimmer */
+.ep-stack-row-num {
+  background: linear-gradient(90deg, #A90F18, #ff4455, #A90F18);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background-position 0.5s ease;
+}
+.ep-stack-row:hover .ep-stack-row-num {
+  animation: ep-shimmer 1.2s linear infinite;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   04 / DEVELOPMENT LOG — Timeline Animations
+───────────────────────────────────────────────────── */
+
+.ep-devlog-title span {
+  display: block;
+}
+
+/* Timeline entries — staggered entrance from left */
+.ep-log-entry {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ep-log-entry.ep-entry-revealed {
+  opacity: 1; transform: none;
+}
+
+/* Node — pulsing glow for active states */
+.ep-log-progress .ep-log-node {
+  animation: ep-pulse 2.2s ease-in-out infinite, ep-glowPulse 2.2s ease-in-out infinite;
+  box-shadow: 0 0 0 3px rgba(169, 15, 24, 0.12);
+}
+
+/* Node — active ripple effect */
+.ep-log-node {
+  position: relative;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.ep-log-entry:hover .ep-log-node {
+  transform: scale(1.4);
+}
+
+/* Year label — rotate in */
+.ep-log-year {
+  transition: color 0.3s ease;
+}
+.ep-log-entry:hover .ep-log-year {
+  color: #A90F18;
+}
+
+/* Log title — slide on hover */
+.ep-log-title {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+}
+.ep-log-entry:hover .ep-log-title {
+  transform: translateX(8px);
+  color: #F1F0EB;
+}
+
+/* Log headline — italic emphasis transition */
+.ep-log-headline {
+  transition: color 0.3s ease;
+}
+.ep-log-entry:hover .ep-log-headline {
+  color: rgba(241, 240, 235, 0.8);
+}
+
+/* Status chip — breathe animation on SHIPPING */
+.ep-log-entry.ep-log-shipping .ep-log-status-chip {
+  animation: ep-glowPulse 2s ease-in-out infinite;
+}
+
+/* Timeline crimson line — smooth draw */
+.ep-timeline-line {
+  background: linear-gradient(to bottom, #A90F18 0%, rgba(169, 15, 24, 0.4) 80%, transparent 100%);
+  transition: height 0.15s ease-out;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(169, 15, 24, 0.3);
+}
+
+/* Connecting dots to line */
+.ep-timeline-track::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(169, 15, 24, 0.3);
+}
+
+
+/* ─────────────────────────────────────────────────────
+   05 / STILL BUILDING — Cinematic Entrance
+───────────────────────────────────────────────────── */
+
+/* Scanline sweep across the section on entry */
+.ep-still-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(169, 15, 24, 0.6), transparent);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ep-still-section.ep-visible::before {
+  opacity: 1;
+  animation: ep-scanline 2s ease-out both;
+}
+
+/* Headline lines — slide from left with skew correction */
+.ep-still-line-1,
+.ep-still-line-2,
+.ep-still-line-3 {
+  opacity: 0;
+  transform: translateX(-60px) skewX(-3deg);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ep-still-section.ep-visible .ep-still-line-1 {
+  opacity: 0.2; transform: none; transition-delay: 0.05s;
+}
+.ep-still-section.ep-visible .ep-still-line-2 {
+  opacity: 0.55; transform: none; transition-delay: 0.18s;
+}
+.ep-still-section.ep-visible .ep-still-line-3 {
+  opacity: 1; transform: none; transition-delay: 0.31s;
+}
+
+/* Still para — fade up */
+.ep-still-para {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.ep-still-para:nth-child(1) { transition-delay: 0.5s; }
+.ep-still-para:nth-child(2) { transition-delay: 0.65s; }
+
+.ep-still-section.ep-visible .ep-still-para {
+  opacity: 1; transform: none;
+}
+
+/* Currently items — staggered slide-up */
+.ep-currently-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ep-currently-item:nth-child(1) { transition-delay: 0.7s; }
+.ep-currently-item:nth-child(2) { transition-delay: 0.8s; }
+.ep-currently-item:nth-child(3) { transition-delay: 0.9s; }
+.ep-currently-item:nth-child(4) { transition-delay: 1.0s; }
+
+.ep-still-section.ep-visible .ep-currently-item {
+  opacity: 1; transform: none;
+}
+
+/* Currently item hover */
+.ep-currently-item {
+  transition: opacity 0.5s ease, transform 0.5s ease,
+              border-left-color 0.25s ease, padding-left 0.3s ease;
+}
+.ep-currently-item:hover {
+  border-left-color: #A90F18;
+  padding-left: 1.2rem;
+}
+.ep-currently-val {
+  transition: color 0.25s ease, letter-spacing 0.3s ease;
+}
+.ep-currently-item:hover .ep-currently-val {
+  color: #F1F0EB;
+  letter-spacing: 0.02em;
+}
+
+/* Devanagari line — typewriter blink cursor */
+.ep-still-devanagari {
+  opacity: 0;
+  transition: opacity 0.5s ease 1.2s;
+}
+.ep-still-section.ep-visible .ep-still-devanagari {
+  opacity: 1;
+}
+.ep-still-devanagari::after {
+  content: '|';
+  animation: ep-blink 1s step-end infinite;
+  color: #A90F18;
+  margin-left: 2px;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   06 / THE LAST FRAME — Cinematic Closing
+───────────────────────────────────────────────────── */
+
+/* LET'S — fade in light */
+.ep-lf-lets {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+/* BUILD. — crimson dramatic entrance */
+.ep-lf-build {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+
+.ep-is-visible .ep-lf-lets { opacity: 1; transform: none; }
+.ep-is-visible .ep-lf-build { opacity: 1; transform: none; }
+
+/* Glitch on headline hover */
+.ep-lastframe-headline {
+  position: relative;
+  cursor: default;
+}
+
+.ep-lf-build::before,
+.ep-lf-build::after {
+  content: 'BUILD.';
+  position: absolute;
+  left: 0;
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: inherit;
+  font-weight: 900;
+  font-style: italic;
+  pointer-events: none;
+  opacity: 0;
+}
+.ep-lf-build::before { color: #ff2244; }
+.ep-lf-build::after  { color: #00d4ff; mix-blend-mode: screen; }
+
+.ep-lastframe-headline:hover .ep-lf-build::before {
+  opacity: 0.5; animation: ep-glitch-1 0.45s steps(1) both;
+}
+.ep-lastframe-headline:hover .ep-lf-build::after {
+  opacity: 0.4; animation: ep-glitch-2 0.45s steps(1) both;
+}
+
+/* Subtext — fade in */
+.ep-lastframe-sub {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease 0.45s, transform 0.7s ease 0.45s;
+}
+.ep-is-visible .ep-lastframe-sub { opacity: 1; transform: none; }
+
+/* Email block — cinematic wipe */
+.ep-email-block {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s;
+}
+.ep-is-visible .ep-email-block { opacity: 1; transform: none; }
+
+/* Email address — magnetic scale */
+.ep-email-addr {
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.3s ease, letter-spacing 0.3s ease;
+}
+.ep-email-link:hover .ep-email-addr {
+  color: #A90F18;
+  transform: scale(1.02);
+  letter-spacing: 0.04em;
+}
+
+/* Social cards — staggered slide up */
+.ep-social-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease, background 0.25s ease;
+}
+.ep-social-card:nth-child(1) { transition-delay: 0.75s; }
+.ep-social-card:nth-child(2) { transition-delay: 0.88s; }
+.ep-social-card:nth-child(3) { transition-delay: 1.01s; }
+
+.ep-is-visible .ep-social-card {
+  opacity: 1; transform: none;
+}
+
+.ep-social-card:hover {
+  border-color: rgba(169, 15, 24, 0.4);
+  background: rgba(169, 15, 24, 0.03);
+  transform: translateY(-4px);
+}
+
+/* Social handle — magnetic expand */
+.ep-social-handle {
+  transition: transform 0.3s ease, color 0.2s ease;
+}
+.ep-social-card:hover .ep-social-handle {
+  transform: translateX(4px);
+  color: #F1F0EB;
+}
+
+/* Credits bar — slide up */
+.ep-credits-bar {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease 1.2s, transform 0.6s ease 1.2s;
+}
+.ep-is-visible .ep-credits-bar {
+  opacity: 1; transform: none;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   GLOBAL MICRO-ANIMATIONS
+───────────────────────────────────────────────────── */
+
+/* Section rule — expand on scroll into view */
+.ep-section-rule {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.4s;
+}
+.ep-is-visible .ep-section-rule { opacity: 1; }
+
+.ep-rule-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+.ep-rule-line:last-child { transform-origin: right; }
+.ep-is-visible .ep-rule-line { transform: scaleX(1); }
+
+.ep-rule-text {
+  opacity: 0;
+  transition: opacity 0.5s ease 1s;
+}
+.ep-is-visible .ep-rule-text { opacity: 1; }
+
+/* Reg marks — float animation */
+.ep-reg-mark {
+  animation: ep-float 6s ease-in-out infinite;
+}
+.ep-reg-tr { animation-delay: 3s; }
+.ep-reg-br { animation-delay: 1.5s; }
+
+/* Action buttons — shared hover lift */
+.ep-poster-primary-btn,
+.ep-poster-live-btn,
+.ep-work-all-repos-btn,
+.ep-email-copy-btn {
+  transition: background 0.25s ease, border-color 0.25s ease,
+              color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ep-poster-primary-btn:hover,
+.ep-work-all-repos-btn:hover,
+.ep-email-copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.ep-poster-live-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(169, 15, 24, 0.2);
+}
+
+/* Grain overlay — slow drift for cinematic texture */
+.ep-grain {
+  animation: ep-scanline 8s linear infinite;
+  animation-play-state: paused;
+}
+
+/* Chapter eyebrow fade-in */
+.ep-chapter-eyebrow {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.ep-is-visible .ep-chapter-eyebrow { opacity: 1; transform: none; }
+
+
+/* ─────────────────────────────────────────────────────
+   MARQUEE TICKER STRIP (bottom of work section)
+───────────────────────────────────────────────────── */
+
+.ep-ticker-wrap {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid rgba(241, 240, 235, 0.06);
+  border-bottom: 1px solid rgba(241, 240, 235, 0.06);
+  background: rgba(169, 15, 24, 0.04);
+  padding: 0.6rem 0;
+  position: relative;
+  z-index: 10;
+}
+
+.ep-ticker-inner {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ep-ticker 22s linear infinite;
+}
+
+.ep-ticker-item {
+  display: inline-block;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(241, 240, 235, 0.3);
+  padding: 0 2.5rem;
+}
+
+.ep-ticker-item-crimson {
+  color: rgba(169, 15, 24, 0.6);
+}
+
+.ep-ticker-sep {
+  color: rgba(169, 15, 24, 0.4);
+  padding: 0 1rem;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   CUSTOM SCROLLBAR (cinematic minimal)
+───────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #A90F18; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(169, 15, 24, 0.7); }
+
+
+/* ─────────────────────────────────────────────────────
+   REDUCED MOTION — respect system preference
+───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .ep-headline-not, .ep-headline-just, .ep-headline-code,
+  .ep-person-pull-quote, .ep-person-body, .ep-focus-list li,
+  .ep-destination-card, .ep-work-title-built, .ep-work-title-different,
+  .ep-poster, .ep-stack-row, .ep-log-entry, .ep-still-line-1,
+  .ep-still-line-2, .ep-still-line-3, .ep-still-para, .ep-currently-item,
+  .ep-lf-lets, .ep-lf-build, .ep-social-card, .ep-email-block,
+  .ep-chapter-eyebrow, .ep-section-rule {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    clip-path: none !important;
+  }
+}
