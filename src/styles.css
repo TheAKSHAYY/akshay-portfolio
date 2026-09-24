@@ -58,10 +58,10 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
-  color-scheme: light;
-  background-color: #ffffff;
-  color: #0f172a;
+  scroll-behavior: auto;
+  color-scheme: dark;
+  background-color: #080808;
+  color: #F1F0EB;
 }
 
 body {

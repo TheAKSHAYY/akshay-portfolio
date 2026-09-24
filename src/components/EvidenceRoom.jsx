@@ -111,7 +111,7 @@ const PROJECTS = [
   },
 ]
 
-export default function EvidenceRoom() {
+function EvidenceRoom() {
   const [activeFilter, setActiveFilter] = useState('ALL')
   const sectionRef = useRef(null)
 
@@ -333,3 +333,5 @@ export default function EvidenceRoom() {
     </section>
   )
 }
+
+export default React.memo(EvidenceRoom)

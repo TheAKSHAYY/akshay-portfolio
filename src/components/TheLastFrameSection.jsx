@@ -1,18 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { profile } from '../data/site'
 
-export default function TheLastFrameSection() {
+function TheLastFrameSection() {
   const [copied, setCopied] = useState(false)
   const [visible, setVisible] = useState(false)
   const sectionRef = useRef(null)
   const email = profile.email
 
   useEffect(() => {
+    if (!sectionRef.current) return
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true) },
-      { threshold: 0.12 }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.08 }
     )
-    if (sectionRef.current) obs.observe(sectionRef.current)
+    obs.observe(sectionRef.current)
     return () => obs.disconnect()
   }, [])
 
@@ -114,3 +120,5 @@ export default function TheLastFrameSection() {
     </footer>
   )
 }
+
+export default React.memo(TheLastFrameSection)

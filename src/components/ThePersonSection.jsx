@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function ThePersonSection() {
+function ThePersonSection() {
   const sectionRef = useRef(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    if (!sectionRef.current) return
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.12 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.08 }
     )
-    if (sectionRef.current) obs.observe(sectionRef.current)
+    obs.observe(sectionRef.current)
     return () => obs.disconnect()
   }, [])
 
@@ -48,7 +54,7 @@ export default function ThePersonSection() {
             <span className="ep-strip-sep">·</span>
             <span className="ep-strip-item">INDIA</span>
             <span className="ep-strip-sep">·</span>
-            <span className="ep-strip-item ep-strip-devanagari" title="Code se Kahani">[कोड से कहानी]</span>
+            <span className="ep-strip-item ep-strip-devanagari" title="Code se Kahani"></span>
           </div>
         </div>
 
@@ -65,8 +71,8 @@ export default function ThePersonSection() {
               The goal is clear: become a capable, thoughtful <strong>software developer / SDE</strong> who writes reliable code and builds things people actually use. Always a project open on the screen.
             </p>
             <p className="ep-person-hinglish" title="Not just code. I turn ideas into reality.">
-              Sirf code nahi.<br />Ideas ko reality mein turn karta hoon.
-            </p>
+              <br />      
+                    </p>
           </div>
 
           <div className="ep-focus-block">
@@ -89,9 +95,11 @@ export default function ThePersonSection() {
 
       <div className="ep-section-rule" aria-hidden="true">
         <span className="ep-rule-line" />
-        <span className="ep-rule-text">BCA TO SDE · STILL LOADING · [अभी भी सीख रहा हूँ]</span>
+        <span className="ep-rule-text">BCA TO SDE · STILL LOADING ·</span>
         <span className="ep-rule-line" />
       </div>
     </section>
   )
 }
+
+export default React.memo(ThePersonSection)

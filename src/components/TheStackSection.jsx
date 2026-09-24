@@ -82,35 +82,24 @@ const skillGroups = [
   },
 ]
 
-export default function TheStackSection() {
+function TheStackSection() {
   const [expandedId, setExpandedId] = useState(null)
-  const [sectionVisible, setSectionVisible] = useState(false)
-  const [revealedGroups, setRevealedGroups] = useState(new Set())
+  const [sectionVisible, setSectionVisible] = useState(true)
   const sectionRef = useRef(null)
-  const groupRefs = useRef([])
 
   useEffect(() => {
+    // Subtle one-time reveal
+    if (!sectionRef.current) return
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setSectionVisible(true) },
-      { threshold: 0.08 }
-    )
-    if (sectionRef.current) obs.observe(sectionRef.current)
-    return () => obs.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const idx = parseInt(entry.target.dataset.groupIdx)
-            setRevealedGroups(prev => new Set([...prev, idx]))
-          }
-        })
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSectionVisible(true)
+          obs.disconnect()
+        }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05 }
     )
-    groupRefs.current.forEach(ref => { if (ref) obs.observe(ref) })
+    obs.observe(sectionRef.current)
     return () => obs.disconnect()
   }, [])
 
@@ -146,10 +135,7 @@ export default function TheStackSection() {
         {skillGroups.map((group, gIdx) => (
           <div
             key={group.id}
-            ref={el => groupRefs.current[gIdx] = el}
-            data-group-idx={gIdx}
-            className={`ep-skill-group ${revealedGroups.has(gIdx) ? 'ep-group-revealed' : ''}`}
-            style={{ transitionDelay: revealedGroups.has(gIdx) ? `${gIdx * 0.08}s` : '0s' }}
+            className="ep-skill-group ep-group-revealed"
           >
             {/* Group label header */}
             <div className="ep-group-label-row">
@@ -216,9 +202,11 @@ export default function TheStackSection() {
 
       <div className="ep-section-rule" aria-hidden="true">
         <span className="ep-rule-line" />
-        <span className="ep-rule-text">10 TECHNOLOGIES · COUNTING [और सीख रहा हूँ]</span>
+        <span className="ep-rule-text">10 TECHNOLOGIES · COUNTING </span>
         <span className="ep-rule-line" />
       </div>
     </section>
   )
 }
+
+export default React.memo(TheStackSection)

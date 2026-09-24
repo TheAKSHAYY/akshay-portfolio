@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function StillBuildingSection() {
+function StillBuildingSection() {
   const sectionRef = useRef(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    if (!sectionRef.current) return
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.3 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.1 }
     )
-    if (sectionRef.current) obs.observe(sectionRef.current)
+    obs.observe(sectionRef.current)
     return () => obs.disconnect()
   }, [])
 
@@ -73,3 +79,5 @@ export default function StillBuildingSection() {
     </section>
   )
 }
+
+export default React.memo(StillBuildingSection)

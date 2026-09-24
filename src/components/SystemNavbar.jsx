@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function SystemNavbar({ activeSection = 'hero' }) {
+function SystemNavbar({ activeSection = 'hero' }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navItems = [
@@ -56,4 +56,6 @@ export default function SystemNavbar({ activeSection = 'hero' }) {
     </header>
   )
 }
+
+export default React.memo(SystemNavbar)
 

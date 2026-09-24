@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const devLog = [
   {
-    step: '01', id: 'foundation', year: '2022',
+    step: '01', id: 'foundation', year: '2024',
     title: 'STARTED BCA',
     status: 'DONE', statusClass: 'ep-log-done',
     headline: 'Programming fundamentals and CS foundation.',
@@ -51,53 +51,83 @@ const devLog = [
   },
 ]
 
-export default function DevLogSection() {
+function DevLogSection() {
   const lineRef = useRef(null)
   const sectionRef = useRef(null)
   const entryRefs = useRef([])
-  const [lineHeight, setLineHeight] = useState(0)
   const [sectionVisible, setSectionVisible] = useState(false)
   const [revealedEntries, setRevealedEntries] = useState(new Set())
 
-  // Section header
+  // Section header - subtle one-time reveal
   useEffect(() => {
+    if (!sectionRef.current) return
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setSectionVisible(true) },
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSectionVisible(true)
+          obs.disconnect()
+        }
+      },
       { threshold: 0.08 }
     )
-    if (sectionRef.current) obs.observe(sectionRef.current)
+    obs.observe(sectionRef.current)
     return () => obs.disconnect()
   }, [])
 
-  // Entry-by-entry reveal
+  // Entry-by-entry reveal - unobserve immediately once revealed
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const idx = parseInt(entry.target.dataset.entryIdx)
-            setRevealedEntries(prev => new Set([...prev, idx]))
+            const idx = parseInt(entry.target.dataset.entryIdx, 10)
+            setRevealedEntries(prev => {
+              if (prev.has(idx)) return prev
+              const next = new Set(prev)
+              next.add(idx)
+              return next
+            })
+            obs.unobserve(entry.target)
           }
         })
       },
-      { threshold: 0.25 }
+      { threshold: 0.15 }
     )
     entryRefs.current.forEach(ref => { if (ref) obs.observe(ref) })
     return () => obs.disconnect()
   }, [])
 
-  // Scroll-driven line draw
+  // Scroll-driven line draw via GPU-accelerated transform (scaleY) with zero React re-renders
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
+    let ticking = false
+
+    const updateLine = () => {
+      if (!sectionRef.current || !lineRef.current) {
+        ticking = false
+        return
+      }
       const rect = sectionRef.current.getBoundingClientRect()
       const windowH = window.innerHeight
-      const sectionH = sectionRef.current.offsetHeight
-      const progress = Math.max(0, Math.min(1, (windowH - rect.top) / (sectionH + windowH * 0.3)))
-      setLineHeight(progress * 100)
+
+      // Only perform work if section is in or near viewport
+      if (rect.bottom > 0 && rect.top < windowH) {
+        const sectionH = sectionRef.current.offsetHeight
+        const progress = Math.max(0, Math.min(1, (windowH - rect.top) / (sectionH + windowH * 0.3)))
+        lineRef.current.style.transform = `translateX(-50%) scaleY(${progress})`
+      }
+      ticking = false
     }
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateLine)
+        ticking = true
+      }
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    updateLine()
+
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -129,7 +159,7 @@ export default function DevLogSection() {
           <div
             ref={lineRef}
             className="ep-timeline-line"
-            style={{ height: `${lineHeight}%` }}
+            style={{ height: '100%', transform: 'translateX(-50%) scaleY(0)', transformOrigin: 'top', willChange: 'transform' }}
           />
         </div>
 
@@ -166,3 +196,5 @@ export default function DevLogSection() {
     </section>
   )
 }
+
+export default React.memo(DevLogSection)

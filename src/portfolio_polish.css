@@ -90,17 +90,17 @@
   margin-top: 0;
 }
 
-/* Group container */
+/* Group container — safe default visible state (Requirement 3: Skill content should have a safe default visible state) */
 .ep-skill-group {
   border-top: 1px solid rgba(241, 240, 235, 0.08);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 1;
+  transform: none;
 }
 
-.ep-skill-group.ep-group-revealed {
-  opacity: 1;
-  transform: translateY(0);
+/* Ensure skill rows are always visible and responsive */
+.ep-stack-row {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Group label row */

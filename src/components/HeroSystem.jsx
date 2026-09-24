@@ -1,43 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-export default function HeroSystem() {
-  const [scrollY, setScrollY] = useState(0)
+function HeroSystem() {
   const heroRef = useRef(null)
+  const nameRef = useRef(null)
+  const detailsRef = useRef(null)
+  const portraitRef = useRef(null)
 
   useEffect(() => {
     let ticking = false
+    const getHeroHeight = () => (heroRef.current ? heroRef.current.offsetHeight : window.innerHeight || 900)
+
+    const updateTransforms = () => {
+      const scrollY = window.scrollY
+      const heroHeight = getHeroHeight()
+      
+      // Stop work completely if hero is out of view
+      if (scrollY > heroHeight * 1.25) {
+        ticking = false
+        return
+      }
+
+      const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1.2)
+      const textTranslateX = progress * 110
+      const textTranslateY = progress * 30
+      const textScale = 1 + progress * 0.02
+      const textOpacity = 1 - progress * 0.15
+      const portraitTranslateY = progress * 35
+      const labelTranslateY = -progress * 25
+
+      if (nameRef.current) {
+        nameRef.current.style.transform = `translate3d(${textTranslateX}px, ${textTranslateY}px, 0) scale(${textScale})`
+        nameRef.current.style.opacity = textOpacity
+      }
+      if (portraitRef.current) {
+        portraitRef.current.style.transform = `translate3d(-50%, ${portraitTranslateY}px, 0)`
+      }
+      if (detailsRef.current) {
+        detailsRef.current.style.transform = `translate3d(0, ${labelTranslateY}px, 0)`
+      }
+
+      ticking = false
+    }
 
     const handleScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY)
-          ticking = false
-        })
+        window.requestAnimationFrame(updateTransforms)
         ticking = true
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    updateTransforms()
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  // Refined subtle scroll parallax (calm, sophisticated movement)
-  const heroHeight = typeof window !== 'undefined' ? window.innerHeight : 900
-  const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1.2)
-
-  // Giant typography: subtle horizontal & vertical shift behind portrait
-  const textTranslateX = progress * 110
-  const textTranslateY = progress * 30
-  const textScale = 1 + progress * 0.02
-  const textOpacity = 1 - progress * 0.15
-
-  // Portrait: stable anchor, very gentle parallax
-  const portraitTranslateY = progress * 35
-
-  // Small labels gentle float
-  const labelTranslateY = -progress * 25
 
   return (
     <section id="hero" ref={heroRef} className="cinematic-hero" aria-label="Hero poster — Akshay Sharma">
@@ -73,10 +89,11 @@ export default function HeroSystem() {
 
       {/* 3. LAYER 3: GIANT RED EDITORIAL NAME (RESPONSIVE, FULLY VISIBLE & SCROLL-ANIMATED BEHIND PORTRAIT) */}
       <div
+        ref={nameRef}
         className="giant-name-typography-wrap"
         style={{
-          transform: `translate3d(${textTranslateX}px, ${textTranslateY}px, 0) scale(${textScale})`,
-          opacity: textOpacity,
+          transform: 'translate3d(0px, 0px, 0) scale(1)',
+          opacity: 1,
           willChange: 'transform, opacity',
         }}
         aria-hidden="true"
@@ -94,9 +111,10 @@ export default function HeroSystem() {
 
       {/* 4. LAYER 4: REFINED EDITORIAL ANNOTATIONS (SPARSE, CALM, 10% DETAIL) */}
       <div
+        ref={detailsRef}
         className="editorial-details-layer"
         style={{
-          transform: `translate3d(0, ${labelTranslateY}px, 0)`,
+          transform: 'translate3d(0, 0px, 0)',
         }}
       >
         {/* TOP LEFT: DISCIPLINE & ROLE CLASSIFICATION */}
@@ -131,9 +149,10 @@ export default function HeroSystem() {
 
       {/* 5. LAYER 5: TRANSPARENT PNG PORTRAIT (UNCHANGED, CENTERED FOREGROUND ANCHOR) */}
       <div
+        ref={portraitRef}
         className="hero-portrait-stage"
         style={{
-          transform: `translate3d(-50%, ${portraitTranslateY}px, 0)`,
+          transform: 'translate3d(-50%, 0px, 0)',
           willChange: 'transform',
         }}
       >
@@ -142,6 +161,7 @@ export default function HeroSystem() {
           alt="Akshay Sharma — Software Developer"
           className="portrait-person-cutout"
           loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
       </div>
@@ -156,3 +176,5 @@ export default function HeroSystem() {
     </section>
   )
 }
+
+export default React.memo(HeroSystem)

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 export default function CustomCursor() {
-  const [pos, setPos] = useState({ x: -100, y: -100 })
+  const cursorRef = useRef(null)
+  const activeRef = useRef(false)
+  const labelRef = useRef('')
   const [label, setLabel] = useState('')
   const [active, setActive] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -18,8 +20,21 @@ export default function CustomCursor() {
       return
     }
 
+    let rafId = null
+
     const onMouseMove = (e) => {
-      setPos({ x: e.clientX, y: e.clientY })
+      const clientX = e.clientX
+      const clientY = e.clientY
+
+      if (cursorRef.current) {
+        if (rafId) cancelAnimationFrame(rafId)
+        rafId = requestAnimationFrame(() => {
+          if (cursorRef.current) {
+            cursorRef.current.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`
+          }
+        })
+      }
+
       if (!visible) setVisible(true)
 
       // Context detection based on target element
@@ -27,39 +42,48 @@ export default function CustomCursor() {
         'a, button, [data-cursor], .system-node, .arch-tier-node, .array-cell, .foundation-card, .external-link-card'
       )
 
+      let newActive = false
+      let newLabel = ''
+
       if (target) {
-        setActive(true)
+        newActive = true
         if (target.dataset?.cursor) {
-          setLabel(target.dataset.cursor)
+          newLabel = target.dataset.cursor
         } else if (target.closest('.visit-live-link') || target.closest('.view-github-link') || target.closest('.visit-project-btn')) {
-          setLabel('OPEN ↗')
+          newLabel = 'OPEN ↗'
         } else if (target.closest('.project-tab-card')) {
-          setLabel('SELECT PROJECT')
+          newLabel = 'SELECT PROJECT'
         } else if (target.closest('.retro-skill-card')) {
-          setLabel('INSPECT')
+          newLabel = 'INSPECT'
         } else if (target.closest('.roadmap-step-card')) {
-          setLabel('VIEW STAGE')
+          newLabel = 'VIEW STAGE'
         } else if (target.closest('.email-copy-btn')) {
-          setLabel('COPY')
+          newLabel = 'COPY'
         } else if (target.closest('.github-inspect-btn') || target.closest('.navbar-github-btn')) {
-          setLabel('GITHUB ↗')
-        } else {
-          setLabel('')
+          newLabel = 'GITHUB ↗'
         }
-      } else {
-        setActive(false)
-        setLabel('')
+      }
+
+      // Only trigger React state updates when active or label actually changes
+      if (newActive !== activeRef.current) {
+        activeRef.current = newActive
+        setActive(newActive)
+      }
+      if (newLabel !== labelRef.current) {
+        labelRef.current = newLabel
+        setLabel(newLabel)
       }
     }
 
     const onMouseLeave = () => setVisible(false)
     const onMouseEnter = () => setVisible(true)
 
-    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
     document.addEventListener('mouseleave', onMouseLeave)
     document.addEventListener('mouseenter', onMouseEnter)
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId)
       window.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseleave', onMouseLeave)
       document.removeEventListener('mouseenter', onMouseEnter)
@@ -70,9 +94,11 @@ export default function CustomCursor() {
 
   return (
     <div
+      ref={cursorRef}
       className={`custom-cursor-follower ${active ? 'is-active' : ''} ${label ? 'has-label' : ''}`}
       style={{
-        transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
+        transform: 'translate3d(-100px, -100px, 0)',
+        willChange: 'transform',
       }}
       aria-hidden="true"
     >
