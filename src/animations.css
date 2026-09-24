@@ -1,244 +1,195 @@
 /* ==========================================================================
-   CINEMATIC ANIMATION LAYER — UNIFIED GLOBAL REVEAL SYSTEM
-   Fluid · Editorial · Cinematic · Premium · 60fps/120fps Transform & Opacity
-   Quality Reference: Clean, smooth "AKSHAY SHARMA" horizontal/vertical slide
+   CINEMATIC ANIMATION LAYER — PREMIUM MOTION DESIGN
+   Scroll-triggered reveals · Staggered typewriter · Magnetic hovers
+   Glitch effects · Film reel transitions · Parallax text
    ========================================================================== */
 
-:root {
-  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
-  --dur-small: 0.45s;
-  --dur-text: 0.55s;
-  --dur-heading: 0.65s;
-  --dur-visual: 0.70s;
-}
 
 /* ─────────────────────────────────────────────────────
-   1. KEYFRAME LIBRARY
+   KEYFRAME LIBRARY
 ───────────────────────────────────────────────────── */
 
-/* Hero Entrance: Akshay (from left + subtle bottom) */
-@keyframes heroSlideAkshay {
-  from {
-    opacity: 0;
-    transform: translate3d(-32px, 14px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* Cinematic fade-up (primary entrance) */
+@keyframes ep-fadeUp {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Hero Entrance: Sharma (from right + subtle bottom) */
-@keyframes heroSlideSharma {
-  from {
-    opacity: 0;
-    transform: translate3d(32px, 14px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* Fade-left (text lines, from left edge) */
+@keyframes ep-fadeLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
-/* Hero Portrait Rise (from bottom center) */
-@keyframes heroPortraitRise {
-  from {
-    opacity: 0;
-    transform: translate3d(-50%, 24px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(-50%, 0, 0);
-  }
+/* Fade-right */
+@keyframes ep-fadeRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
-/* Hero Metadata Fade from Left */
-@keyframes heroMetaFadeLeft {
-  from {
-    opacity: 0;
-    transform: translate3d(-16px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* Scale-in (chapter numbers, stamps) */
+@keyframes ep-scaleIn {
+  from { opacity: 0; transform: scale(0.72); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* Hero Metadata Fade from Right */
-@keyframes heroMetaFadeRight {
-  from {
-    opacity: 0;
-    transform: translate3d(16px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* Clip reveal — text slides in from masked left edge */
+@keyframes ep-clipReveal {
+  from { clip-path: inset(0 100% 0 0); opacity: 1; }
+  to   { clip-path: inset(0 0% 0 0); opacity: 1; }
 }
 
-/* Hero Navigation Down Entrance */
-@keyframes heroNavFadeDown {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -12px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Hero Scroll Prompt */
-@keyframes heroScrollPromptFade {
-  from {
-    opacity: 0;
-    transform: translate3d(-50%, 8px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-/* Simple Soft Fade */
-@keyframes heroSimpleFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* Underline Growth */
+/* Crimson underline draw (horizontal rule growth) */
 @keyframes ep-lineGrow {
   from { transform: scaleX(0); transform-origin: left; }
   to   { transform: scaleX(1); transform-origin: left; }
 }
 
-/* Float Animation (quiescent, slow float for non-text marks) */
-@keyframes ep-float {
-  0%, 100% { transform: translateY(0px); }
-  50%      { transform: translateY(-5px); }
+/* Line grow from center */
+@keyframes ep-lineGrowCenter {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
-/* Marquee Ticker */
+/* Slow float — chapter numbers, reg marks */
+@keyframes ep-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Glitch slice (applied to big headings on hover) */
+@keyframes ep-glitch-1 {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(40% 0 40% 0); transform: translate(4px, 0); }
+  40%  { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+  60%  { clip-path: inset(10% 0 70% 0); transform: translate(3px, 0); }
+  80%  { clip-path: inset(50% 0 30% 0); transform: translate(-3px, 0); }
+  100% { clip-path: inset(0% 0 100% 0); transform: translate(0, 0); }
+}
+@keyframes ep-glitch-2 {
+  0%   { clip-path: inset(70% 0 10% 0); transform: translate(4px, 0); color: #A90F18; }
+  25%  { clip-path: inset(30% 0 50% 0); transform: translate(-4px, 0); color: #F1F0EB; }
+  50%  { clip-path: inset(80% 0 5%  0); transform: translate(2px, 0);  color: #A90F18; }
+  75%  { clip-path: inset(15% 0 65% 0); transform: translate(-2px, 0); color: #F1F0EB; }
+  100% { clip-path: inset(100% 0 0% 0); transform: translate(0, 0); }
+}
+
+/* Scanline sweep (decorative overlay animation) */
+@keyframes ep-scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Number count-up shimmer */
+@keyframes ep-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Border trace animation */
+@keyframes ep-borderTrace {
+  0%   { clip-path: inset(0 100% 100% 0); }
+  25%  { clip-path: inset(0 0% 100% 0); }
+  50%  { clip-path: inset(0 0% 0% 0); }
+  75%  { clip-path: inset(0 0% 0% 100%); }
+  100% { clip-path: inset(0 0% 0% 0); }
+}
+
+/* Pulse crimson glow */
+@keyframes ep-glowPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(169, 15, 24, 0); }
+  50%       { box-shadow: 0 0 24px rgba(169, 15, 24, 0.2), 0 0 48px rgba(169, 15, 24, 0.06); }
+}
+
+/* Typewriter cursor blink */
+@keyframes ep-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Ticker scroll — marquee-style bottom strips */
 @keyframes ep-ticker {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 
-/* Subtle Cursor Blink */
-@keyframes ep-blink {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0; }
+/* Stack row shimmer on hover */
+@keyframes ep-rowShimmer {
+  from { background-position: -100% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* Subtle rotate entrance (stamps, badges) */
+@keyframes ep-rotateIn {
+  from { opacity: 0; transform: rotate(-8deg) scale(0.8); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+
+/* Vertical text scroll (log years) */
+@keyframes ep-vertSlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 
 /* ─────────────────────────────────────────────────────
-   2. HERO ENTRANCE SYSTEM (Runs once · Rests completely)
+   SCROLL REVEAL SYSTEM — [data-reveal] attribute
+   Apply via JS IntersectionObserver or CSS :hover
 ───────────────────────────────────────────────────── */
 
-.cinematic-nav-overlay {
-  animation: heroNavFadeDown 0.65s var(--ease-editorial) both;
-}
-
-.akshay-block .giant-word {
-  animation: heroSlideAkshay 0.8s var(--ease-editorial) 0.05s both;
-}
-
-.sharma-block .giant-word {
-  animation: heroSlideSharma 0.8s var(--ease-editorial) 0.11s both;
-}
-
-.inseen-easter-egg {
-  animation: heroSimpleFade 0.6s ease 0.32s both;
-}
-
-.hero-portrait-stage {
-  animation: heroPortraitRise 0.9s var(--ease-editorial) 0.16s both;
-}
-
-.editorial-meta-box.top-left-refined {
-  animation: heroMetaFadeLeft 0.65s var(--ease-editorial) 0.22s both;
-}
-
-.editorial-meta-box.mid-right-refined {
-  animation: heroMetaFadeRight 0.65s var(--ease-editorial) 0.28s both;
-}
-
-.editorial-meta-box.bottom-left-refined {
-  animation: heroMetaFadeLeft 0.65s var(--ease-editorial) 0.34s both;
-}
-
-.hero-scroll-indicator {
-  animation: heroScrollPromptFade 0.65s var(--ease-editorial) 0.5s both;
-}
-
-
-/* ─────────────────────────────────────────────────────
-   3. GLOBAL REUSABLE SCROLL REVEAL UTILITIES [data-reveal]
-───────────────────────────────────────────────────── */
-
+/* Base hidden state for all animated elements */
 [data-reveal] {
   opacity: 0;
   will-change: opacity, transform;
 }
 
-[data-reveal="heading"] {
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial),
-              transform var(--dur-heading) var(--ease-editorial);
-}
-
-[data-reveal="paragraph"] {
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
-}
-
-[data-reveal="label"] {
-  transform: translateX(-12px);
-  transition: opacity var(--dur-small) var(--ease-editorial),
-              transform var(--dur-small) var(--ease-editorial);
-}
-
-[data-reveal="left"] {
-  transform: translateX(-16px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
-}
-
-[data-reveal="right"] {
-  transform: translateX(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
-}
-
-[data-reveal="visual"] {
-  transform: translateY(20px) scale(0.985);
-  transition: opacity var(--dur-visual) var(--ease-editorial),
-              transform var(--dur-visual) var(--ease-editorial);
-}
-
 [data-reveal="fade-up"] {
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial),
-              transform var(--dur-heading) var(--ease-editorial);
+  transform: translateY(48px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+[data-reveal="fade-left"] {
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="fade-right"] {
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="scale-in"] {
+  transform: scale(0.8);
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-reveal="clip"] {
+  clip-path: inset(0 100% 0 0);
+  opacity: 1 !important;
+  transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Revealed state */
 [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
+  clip-path: inset(0 0% 0 0);
 }
 
 
 /* ─────────────────────────────────────────────────────
-   4. CHAPTER EYEBROW (Small Labels: translateX(-12px) → 0)
+   CHAPTER EYEBROW — animated entrance
 ───────────────────────────────────────────────────── */
 
 .ep-chapter-eyebrow {
   opacity: 0;
-  transform: translateX(-12px);
-  transition: opacity var(--dur-small) var(--ease-editorial),
-              transform var(--dur-small) var(--ease-editorial);
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-is-visible .ep-chapter-eyebrow,
@@ -248,228 +199,383 @@
 }
 
 .ep-chapter-num {
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, letter-spacing 0.4s ease;
+}
+
+.ep-section:hover .ep-chapter-num {
+  letter-spacing: 0.2em;
 }
 
 .ep-chapter-rule {
   transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 0.65s var(--ease-editorial) 0.08s;
+  animation: ep-lineGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-play-state: paused;
 }
 
 .ep-is-visible .ep-chapter-rule,
 .ep-visible .ep-chapter-rule {
-  transform: scaleX(1);
+  animation-play-state: running;
 }
 
+/* Animated chapter label — letter spacing expand */
 .ep-chapter-label {
-  transition: color 0.3s ease;
+  transition: letter-spacing 0.5s ease, color 0.3s ease;
+}
+
+.ep-is-visible .ep-chapter-label,
+.ep-visible .ep-chapter-label {
+  letter-spacing: 0.28em;
+  color: rgba(241, 240, 235, 0.65);
 }
 
 
 /* ─────────────────────────────────────────────────────
-   5. 01 / THE PERSON — REFINED EDITORIAL MOTION
+   01 / THE PERSON — Enhanced Animations
 ───────────────────────────────────────────────────── */
 
-/* Large Typography: NOT JUST CODE (translateY(24px) → 0, subtle stagger) */
+/* Massive headline — line-by-line staggered reveal */
 .ep-headline-not,
 .ep-headline-just,
 .ep-headline-code {
   display: block;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial),
-              transform var(--dur-heading) var(--ease-editorial);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-is-visible .ep-headline-not {
-  opacity: 1;
-  transform: none;
-  transition-delay: 0.04s;
+  opacity: 1; transform: none; transition-delay: 0s;
 }
-
 .ep-is-visible .ep-headline-just {
-  opacity: 0.35;
-  transform: none;
-  transition-delay: 0.10s;
+  opacity: 0.35; transform: none; transition-delay: 0.07s;
 }
-
 .ep-is-visible .ep-headline-code {
-  opacity: 1;
-  transform: none;
-  transition-delay: 0.16s;
+  opacity: 1; transform: none; transition-delay: 0.14s;
 }
 
+/* Glitch effect on headline hover */
 .ep-person-headline {
+  position: relative;
   cursor: default;
 }
 
 .ep-headline-code {
-  transition: opacity var(--dur-heading) var(--ease-editorial) 0.16s,
-              transform var(--dur-heading) var(--ease-editorial) 0.16s,
-              color 0.3s ease;
+  position: relative;
 }
 
-.ep-person-headline:hover .ep-headline-code {
-  color: #ff2244;
+.ep-headline-code::before,
+.ep-headline-code::after {
+  content: 'CODE.';
+  position: absolute;
+  left: 0; top: 0;
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: inherit;
+  font-weight: 900;
+  font-style: italic;
+  line-height: inherit;
+  letter-spacing: inherit;
+  pointer-events: none;
+  opacity: 0;
 }
 
-/* Archival strip (translateY(14px) → 0) */
+.ep-headline-code::before { color: #ff2244; }
+.ep-headline-code::after  { color: #00d4ff; mix-blend-mode: screen; }
+
+.ep-person-headline:hover .ep-headline-code::before {
+  opacity: 0.7;
+  animation: ep-glitch-1 0.4s steps(1) both;
+}
+.ep-person-headline:hover .ep-headline-code::after {
+  opacity: 0.5;
+  animation: ep-glitch-2 0.4s steps(1) both;
+}
+
+/* Archival strip — scan-in animation */
 .ep-archival-strip {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.22s,
-              transform var(--dur-text) var(--ease-editorial) 0.22s;
+  transform: translateY(12px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.20s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.20s;
 }
-
 .ep-is-visible .ep-archival-strip {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
+/* Strip items — hover shimmer */
 .ep-strip-item {
   position: relative;
   transition: color 0.25s ease;
 }
-
 .ep-strip-item::after {
   content: '';
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--accent-crimson, #A90F18);
+  bottom: -1px; left: 0;
+  width: 100%; height: 1px;
+  background: #A90F18;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
 }
-
 .ep-strip-item:hover { color: #F1F0EB; }
 .ep-strip-item:hover::after { transform: scaleX(1); }
 
-/* Pull quote (translateY(16px) → 0) */
+/* Pull quote — slide up with border grow */
 .ep-person-pull-quote {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.16s,
-              transform var(--dur-text) var(--ease-editorial) 0.16s;
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
   border-left-width: 0;
 }
-
 .ep-is-visible .ep-person-pull-quote {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
   border-left-width: 3px;
 }
 
-/* Bio paragraphs (translateY(16px) → 0, staggered) */
+/* Bio paragraphs — fade up staggered */
 .ep-person-body,
 .ep-person-hinglish {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
+  transform: translateY(14px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.ep-person-bio-cols .ep-person-body:nth-child(1) { transition-delay: 0.24s; }
-.ep-person-bio-cols .ep-person-body:nth-child(2) { transition-delay: 0.30s; }
-.ep-person-bio-cols .ep-person-hinglish { transition-delay: 0.36s; }
+.ep-person-bio-cols .ep-person-body:nth-child(1) { transition-delay: 0.22s; }
+.ep-person-bio-cols .ep-person-body:nth-child(2) { transition-delay: 0.28s; }
+.ep-person-bio-cols .ep-person-hinglish { transition-delay: 0.34s; }
 
 .ep-is-visible .ep-person-body,
 .ep-is-visible .ep-person-hinglish {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
-/* Focus block (Right-side content: translateX(16px) → 0) */
+/* Focus block & list items */
 .ep-focus-block {
   opacity: 0;
-  transform: translateX(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.40s,
-              transform var(--dur-text) var(--ease-editorial) 0.40s;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s;
 }
-
 .ep-is-visible .ep-focus-block {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
 .ep-focus-list li {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.45s var(--ease-editorial),
-              transform 0.45s var(--ease-editorial);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.ep-focus-list li:nth-child(1) { transition-delay: 0.44s; }
-.ep-focus-list li:nth-child(2) { transition-delay: 0.48s; }
-.ep-focus-list li:nth-child(3) { transition-delay: 0.52s; }
-.ep-focus-list li:nth-child(4) { transition-delay: 0.56s; }
+.ep-focus-list li:nth-child(1) { transition-delay: 0.36s; }
+.ep-focus-list li:nth-child(2) { transition-delay: 0.40s; }
+.ep-focus-list li:nth-child(3) { transition-delay: 0.44s; }
+.ep-focus-list li:nth-child(4) { transition-delay: 0.48s; }
 
 .ep-is-visible .ep-focus-list li {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
-/* Destination card (Right-side content + scale: translateX(16px) scale(0.985) → 0 scale(1)) */
+/* Destination card — scale + glow entrance */
 .ep-destination-card {
   opacity: 0;
-  transform: translateX(16px) scale(0.985);
-  transition: opacity var(--dur-heading) var(--ease-editorial) 0.48s,
-              transform var(--dur-heading) var(--ease-editorial) 0.48s,
-              border-color 0.25s ease, background 0.25s ease;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
+              border-color 0.3s ease, background 0.3s ease;
 }
-
 .ep-is-visible .ep-destination-card {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
-
 .ep-destination-card:hover {
   background: rgba(169, 15, 24, 0.08);
   border-color: rgba(169, 15, 24, 0.6);
+  animation: ep-glowPulse 2s ease-in-out infinite;
 }
 
 
 /* ─────────────────────────────────────────────────────
-   6. 03 / THE STACK — ROW REVEAL & SMOOTH INTERACTION
+   02 / SELECTED WORK — Poster Animations
+───────────────────────────────────────────────────── */
+
+/* Header title stagger */
+.ep-work-title-built,
+.ep-work-title-different {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ep-work-title-built { transition-delay: 0s; }
+.ep-work-title-different { transition-delay: 0.15s; }
+
+.ep-is-visible .ep-work-title-built,
+.ep-is-visible .ep-work-title-different {
+  opacity: 1; transform: none;
+}
+.ep-is-visible .ep-work-title-built  { opacity: 0.3; }
+
+.ep-work-lead {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s;
+}
+.ep-is-visible .ep-work-lead { opacity: 1; transform: none; }
+
+.ep-work-github-stamp {
+  opacity: 0;
+  transform: rotate(-6deg) scale(0.85);
+  transition: opacity 0.6s ease 0.5s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+}
+.ep-is-visible .ep-work-github-stamp {
+  opacity: 1; transform: rotate(-2deg) scale(1);
+}
+.ep-work-github-stamp:hover {
+  transform: rotate(0deg) scale(1.04);
+}
+
+/* Individual poster — cinematic slide-in */
+.ep-poster {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s ease;
+}
+
+.ep-poster.ep-poster-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger each poster */
+.ep-poster-idx-0 { transition-delay: 0s; }
+.ep-poster-idx-1 { transition-delay: 0.08s; }
+.ep-poster-idx-2 { transition-delay: 0.16s; }
+.ep-poster-idx-3 { transition-delay: 0.24s; }
+.ep-poster-idx-4 { transition-delay: 0.32s; }
+
+/* Poster hover — lift with crimson glow */
+.ep-poster {
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.ep-poster:hover {
+  background: #0e0e0e;
+  box-shadow: inset 0 0 0 1px rgba(169, 15, 24, 0.2),
+              0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Poster title — magnetic hover scale */
+.ep-poster-title {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              letter-spacing 0.4s ease;
+}
+
+.ep-poster:hover .ep-poster-title {
+  transform: translateX(6px);
+  letter-spacing: 0.01em;
+}
+
+/* Big number — crimson reveal */
+.ep-poster-big-num {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.ep-poster:hover .ep-poster-big-num {
+  color: #A90F18;
+  transform: scale(1.08);
+}
+
+/* Tech tags — stagger on hover */
+.ep-tech-tag {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.ep-poster:hover .ep-tech-tag:nth-child(1) { transition-delay: 0s; }
+.ep-poster:hover .ep-tech-tag:nth-child(2) { transition-delay: 0.04s; }
+.ep-poster:hover .ep-tech-tag:nth-child(3) { transition-delay: 0.08s; }
+.ep-poster:hover .ep-tech-tag:nth-child(4) { transition-delay: 0.12s; }
+.ep-poster:hover .ep-tech-tag:nth-child(5) { transition-delay: 0.16s; }
+.ep-poster:hover .ep-tech-tag {
+  border-color: rgba(169, 15, 24, 0.4);
+  color: rgba(241, 240, 235, 0.9);
+  transform: translateY(-2px);
+}
+
+/* GitHub button — traceable border animation */
+.ep-poster-gh-btn {
+  position: relative;
+  overflow: hidden;
+}
+.ep-poster-gh-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(241, 240, 235, 0.06), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.ep-poster-gh-btn:hover::after {
+  transform: translateX(100%);
+}
+
+/* Live demo btn — pulse */
+.ep-poster-live-btn {
+  position: relative;
+  overflow: hidden;
+}
+.ep-poster-live-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: rgba(169, 15, 24, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+.ep-poster-live-btn:hover::before {
+  width: 300px; height: 300px;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   03 / THE STACK — Row Animations & Reveal
 ───────────────────────────────────────────────────── */
 
 .ep-stack-mega-title span {
   display: block;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial),
-              transform var(--dur-heading) var(--ease-editorial);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.ep-stack-mega-title span:first-child { transition-delay: 0.04s; }
-.ep-stack-mega-title .ep-crimson { transition-delay: 0.10s; }
+.ep-stack-mega-title span:first-child { transition-delay: 0s; }
+.ep-stack-mega-title .ep-crimson { transition-delay: 0.08s; }
 
 .ep-is-visible .ep-stack-mega-title span {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
 .ep-stack-lead {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.16s,
-              transform var(--dur-text) var(--ease-editorial) 0.16s;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.14s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.14s;
 }
-
 .ep-is-visible .ep-stack-lead {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
-/* Group label row entrance (translateX(-14px) → 0) */
+/* Group label row entrance */
 .ep-group-label-row {
   opacity: 0;
-  transform: translateX(-14px);
-  transition: opacity var(--dur-small) var(--ease-editorial),
-              transform var(--dur-small) var(--ease-editorial);
+  transform: translateX(-16px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-group-revealed .ep-group-label-row {
@@ -477,12 +583,12 @@
   transform: none;
 }
 
-/* Stack rows inside groups (translateY(14px) → 0 with 50ms stagger) */
+/* Stack rows inside groups */
 .ep-skill-group .ep-stack-row {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity var(--dur-small) var(--ease-editorial),
-              transform var(--dur-small) var(--ease-editorial),
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
               background 0.25s ease;
 }
 
@@ -496,6 +602,7 @@
 .ep-group-revealed .ep-stack-row:nth-child(3) { transition-delay: 0.15s; }
 .ep-group-revealed .ep-stack-row:nth-child(4) { transition-delay: 0.20s; }
 
+/* Shimmer line on hover */
 .ep-stack-row {
   background-size: 200% 100%;
 }
@@ -507,70 +614,78 @@
     rgba(241, 240, 235, 0.025) 50%,
     rgba(241, 240, 235, 0) 100%
   );
+  background-size: 200% 100%;
 }
 
+/* Row name — expand on hover */
 .ep-stack-row-name {
   transition: letter-spacing 0.3s ease, color 0.2s ease;
 }
-
 .ep-stack-row:hover .ep-stack-row-name { letter-spacing: 0.04em; }
 .ep-stack-row-open .ep-stack-row-name { color: #F1F0EB; }
 
+/* Toggle icon — rotate */
 .ep-stack-toggle {
-  transition: transform 0.35s var(--ease-editorial), color 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
 }
 .ep-stack-row-open .ep-stack-toggle { transform: rotate(45deg); color: #A90F18; }
 
+/* Accent line — animate width */
 .ep-stack-accent-line {
   transform-origin: left;
   transition: transform 0.4s ease, background 0.3s ease;
   transform: scaleX(0.3);
 }
-
 .ep-stack-row:hover .ep-stack-accent-line,
 .ep-stack-row-open .ep-stack-accent-line {
   transform: scaleX(1);
 }
 
-/* Drawer smooth expansion */
+/* Drawer — slide in */
 .ep-stack-drawer {
-  animation: heroNavFadeDown 0.4s var(--ease-editorial) both;
+  animation: ep-fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Topic chips — stagger */
 .ep-stack-topic {
   opacity: 0;
   transform: translateY(10px);
-  animation: heroNavFadeDown 0.4s var(--ease-editorial) both;
+  animation: ep-fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .ep-stack-topics .ep-stack-topic:nth-child(1) { animation-delay: 0.05s; }
 .ep-stack-topics .ep-stack-topic:nth-child(2) { animation-delay: 0.10s; }
 .ep-stack-topics .ep-stack-topic:nth-child(3) { animation-delay: 0.15s; }
 .ep-stack-topics .ep-stack-topic:nth-child(4) { animation-delay: 0.20s; }
 
+/* Devanagari badge — subtle pulse */
 .ep-stack-devanagari-badge {
   animation: ep-blink 3s ease-in-out infinite;
 }
 
+/* Row number — count-up shimmer */
 .ep-stack-row-num {
-  color: #A90F18;
-  transition: color 0.3s ease;
+  background: linear-gradient(90deg, #A90F18, #ff4455, #A90F18);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background-position 0.5s ease;
 }
 .ep-stack-row:hover .ep-stack-row-num {
-  color: #ff4455;
+  animation: ep-shimmer 1.2s linear infinite;
 }
 
 
 /* ─────────────────────────────────────────────────────
-   7. 04 / DEV LOG — PROGRESSIVE TIMELINE REVEAL
+   04 / DEVELOPMENT LOG — Timeline Animations
 ───────────────────────────────────────────────────── */
 
 .ep-devlog-title {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial) 0.06s,
-              transform var(--dur-heading) var(--ease-editorial) 0.06s;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
 }
-
 .ep-is-visible .ep-devlog-title {
   opacity: 1;
   transform: none;
@@ -578,38 +693,43 @@
 
 .ep-devlog-lead {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.12s,
-              transform var(--dur-text) var(--ease-editorial) 0.12s;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
 }
-
 .ep-is-visible .ep-devlog-lead {
   opacity: 1;
   transform: none;
 }
 
-/* Timeline entries — progressive one-by-one reveal */
+/* Timeline entries — staggered entrance from left + bottom */
 .ep-log-entry {
   opacity: 0;
-  transform: translateY(16px) translateX(-12px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
+  transform: translateY(14px) translateX(-14px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-log-entry.ep-entry-revealed {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
+/* Node — pulsing glow for active states */
+.ep-log-progress .ep-log-node {
+  animation: ep-pulse 2.2s ease-in-out infinite, ep-glowPulse 2.2s ease-in-out infinite;
+  box-shadow: 0 0 0 3px rgba(169, 15, 24, 0.12);
+}
+
+/* Node — active ripple effect */
 .ep-log-node {
   position: relative;
   transition: transform 0.3s ease, background 0.3s ease;
 }
-
 .ep-log-entry:hover .ep-log-node {
-  transform: scale(1.35);
+  transform: scale(1.4);
 }
 
+/* Year label — rotate in */
 .ep-log-year {
   transition: color 0.3s ease;
 }
@@ -617,117 +737,146 @@
   color: #A90F18;
 }
 
+/* Log title — slide on hover */
 .ep-log-title {
-  transition: transform 0.3s var(--ease-editorial), color 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
 }
 .ep-log-entry:hover .ep-log-title {
-  transform: translateX(6px);
+  transform: translateX(8px);
   color: #F1F0EB;
 }
 
+/* Log headline — italic emphasis transition */
 .ep-log-headline {
   transition: color 0.3s ease;
 }
 .ep-log-entry:hover .ep-log-headline {
-  color: rgba(241, 240, 235, 0.85);
+  color: rgba(241, 240, 235, 0.8);
 }
 
+/* Status chip — breathe animation on SHIPPING */
+.ep-log-entry.ep-log-shipping .ep-log-status-chip {
+  animation: ep-glowPulse 2s ease-in-out infinite;
+}
+
+/* Timeline crimson line — smooth draw */
 .ep-timeline-line {
   background: linear-gradient(to bottom, #A90F18 0%, rgba(169, 15, 24, 0.4) 80%, transparent 100%);
+  transition: height 0.15s ease-out;
   border-radius: 1px;
+  box-shadow: 0 0 8px rgba(169, 15, 24, 0.3);
+}
+
+/* Connecting dots to line */
+.ep-timeline-track::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(169, 15, 24, 0.3);
 }
 
 
 /* ─────────────────────────────────────────────────────
-   8. 05 / STILL BUILDING — CLEAN EDITORIAL ENTRANCE
+   05 / STILL BUILDING — Cinematic Entrance
 ───────────────────────────────────────────────────── */
 
-/* Headline lines — subtle upward reveal (translateY(24px) → 0) */
+/* Scanline sweep across the section on entry */
+.ep-still-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(169, 15, 24, 0.6), transparent);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ep-still-section.ep-visible::before {
+  opacity: 1;
+  animation: ep-scanline 2s ease-out both;
+}
+
+/* Headline lines — subtle upward reveal */
 .ep-still-line-1,
 .ep-still-line-2,
 .ep-still-line-3 {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial),
-              transform var(--dur-heading) var(--ease-editorial);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-still-section.ep-visible .ep-still-line-1 {
-  opacity: 0.35;
-  transform: none;
-  transition-delay: 0.04s;
+  opacity: 0.25; transform: none; transition-delay: 0s;
 }
-
 .ep-still-section.ep-visible .ep-still-line-2 {
-  opacity: 0.70;
-  transform: none;
-  transition-delay: 0.10s;
+  opacity: 0.6; transform: none; transition-delay: 0.07s;
 }
-
 .ep-still-section.ep-visible .ep-still-line-3 {
-  opacity: 1;
-  transform: none;
-  transition-delay: 0.16s;
+  opacity: 1; transform: none; transition-delay: 0.14s;
 }
 
-/* Still para — fade up (translateY(16px) → 0) */
+/* Still para — fade up */
 .ep-still-para {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial);
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .ep-still-para:nth-child(1) { transition-delay: 0.22s; }
-.ep-still-para:nth-child(2) { transition-delay: 0.28s; }
+.ep-still-para:nth-child(2) { transition-delay: 0.29s; }
 
 .ep-still-section.ep-visible .ep-still-para {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
-/* Currently items — staggered slide-up with subtle scale (translateY(16px) scale(0.985) → 0 scale(1)) */
+/* Currently items — staggered slide-up with subtle scale */
 .ep-currently-item {
   opacity: 0;
   transform: translateY(16px) scale(0.985);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial),
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
               border-left-color 0.25s ease, padding-left 0.3s ease;
 }
-
-.ep-currently-item:nth-child(1) { transition-delay: 0.34s; }
-.ep-currently-item:nth-child(2) { transition-delay: 0.40s; }
-.ep-currently-item:nth-child(3) { transition-delay: 0.46s; }
-.ep-currently-item:nth-child(4) { transition-delay: 0.52s; }
+.ep-currently-item:nth-child(1) { transition-delay: 0.36s; }
+.ep-currently-item:nth-child(2) { transition-delay: 0.42s; }
+.ep-currently-item:nth-child(3) { transition-delay: 0.48s; }
+.ep-currently-item:nth-child(4) { transition-delay: 0.54s; }
 
 .ep-still-section.ep-visible .ep-currently-item {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
+/* Currently item hover */
+.ep-currently-item {
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              border-left-color 0.25s ease, padding-left 0.3s ease;
+}
 .ep-currently-item:hover {
   border-left-color: #A90F18;
   padding-left: 1.2rem;
 }
-
 .ep-currently-val {
   transition: color 0.25s ease, letter-spacing 0.3s ease;
 }
-
 .ep-currently-item:hover .ep-currently-val {
   color: #F1F0EB;
   letter-spacing: 0.02em;
 }
 
+/* Devanagari line — typewriter blink cursor */
 .ep-still-devanagari {
   opacity: 0;
   transition: opacity 0.5s ease 0.6s;
 }
-
 .ep-still-section.ep-visible .ep-still-devanagari {
   opacity: 1;
 }
-
 .ep-still-devanagari::after {
   content: '|';
   animation: ep-blink 1s step-end infinite;
@@ -737,127 +886,140 @@
 
 
 /* ─────────────────────────────────────────────────────
-   9. 06 / THE LAST FRAME — FINAL SECTION REVEAL
+   06 / THE LAST FRAME — Cinematic Closing
 ───────────────────────────────────────────────────── */
 
-/* LET'S (translateY(24px) → 0) */
+/* LET'S — fade in light */
 .ep-lf-lets {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial) 0.04s,
-              transform var(--dur-heading) var(--ease-editorial) 0.04s;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
 }
 
-/* BUILD. (translateY(24px) → 0) */
+/* BUILD. — crimson dramatic entrance */
 .ep-lf-build {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--dur-heading) var(--ease-editorial) 0.12s,
-              transform var(--dur-heading) var(--ease-editorial) 0.12s,
-              color 0.3s ease;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.11s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.11s;
 }
 
-.ep-is-visible .ep-lf-lets { opacity: 0.45; transform: none; }
+.ep-is-visible .ep-lf-lets { opacity: 1; transform: none; }
 .ep-is-visible .ep-lf-build { opacity: 1; transform: none; }
 
+/* Glitch on headline hover */
 .ep-lastframe-headline {
+  position: relative;
   cursor: default;
 }
-.ep-lastframe-headline:hover .ep-lf-build {
-  color: #ff2244;
+
+.ep-lf-build::before,
+.ep-lf-build::after {
+  content: 'BUILD.';
+  position: absolute;
+  left: 0;
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-size: inherit;
+  font-weight: 900;
+  font-style: italic;
+  pointer-events: none;
+  opacity: 0;
+}
+.ep-lf-build::before { color: #ff2244; }
+.ep-lf-build::after  { color: #00d4ff; mix-blend-mode: screen; }
+
+.ep-lastframe-headline:hover .ep-lf-build::before {
+  opacity: 0.5; animation: ep-glitch-1 0.45s steps(1) both;
+}
+.ep-lastframe-headline:hover .ep-lf-build::after {
+  opacity: 0.4; animation: ep-glitch-2 0.45s steps(1) both;
 }
 
-/* Subtext (translateY(16px) → 0) */
+/* Subtext — fade in */
 .ep-lastframe-sub {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-text) var(--ease-editorial) 0.18s,
-              transform var(--dur-text) var(--ease-editorial) 0.18s;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
 }
-
 .ep-is-visible .ep-lastframe-sub { opacity: 1; transform: none; }
 
-/* CTA link (translateY(14px) → 0) */
+/* CTA link */
 .ep-lastframe-cta-link {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity var(--dur-small) var(--ease-editorial) 0.24s,
-              transform var(--dur-small) var(--ease-editorial) 0.24s,
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
               color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
-
 .ep-is-visible .ep-lastframe-cta-link { opacity: 1; transform: none; }
 
-/* Email block (translateY(14px) → 0) */
+/* Email block — cinematic wipe */
 .ep-email-block {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity var(--dur-small) var(--ease-editorial) 0.30s,
-              transform var(--dur-small) var(--ease-editorial) 0.30s;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s;
 }
-
 .ep-is-visible .ep-email-block { opacity: 1; transform: none; }
 
+/* Email address — magnetic scale */
 .ep-email-addr {
   display: inline-block;
   transition: color 0.3s ease, transform 0.3s ease, letter-spacing 0.3s ease;
 }
-
 .ep-email-link:hover .ep-email-addr {
   color: #A90F18;
   transform: scale(1.02);
   letter-spacing: 0.04em;
 }
 
-/* Social cards (translateY(16px) scale(0.985) → 0 scale(1), 60ms stagger) */
+/* Social cards — staggered slide up */
 .ep-social-card {
   opacity: 0;
-  transform: translateY(16px) scale(0.985);
-  transition: opacity var(--dur-text) var(--ease-editorial),
-              transform var(--dur-text) var(--ease-editorial),
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.25s ease, background 0.25s ease;
 }
-
 .ep-social-card:nth-child(1) { transition-delay: 0.36s; }
-.ep-social-card:nth-child(2) { transition-delay: 0.42s; }
-.ep-social-card:nth-child(3) { transition-delay: 0.48s; }
+.ep-social-card:nth-child(2) { transition-delay: 0.43s; }
+.ep-social-card:nth-child(3) { transition-delay: 0.50s; }
 
 .ep-is-visible .ep-social-card {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
 .ep-social-card:hover {
   border-color: rgba(169, 15, 24, 0.4);
   background: rgba(169, 15, 24, 0.03);
-  transform: translateY(-3px);
+  transform: translateY(-4px);
 }
 
+/* Social handle — magnetic expand */
 .ep-social-handle {
   transition: transform 0.3s ease, color 0.2s ease;
 }
-
 .ep-social-card:hover .ep-social-handle {
   transform: translateX(4px);
   color: #F1F0EB;
 }
 
-/* Credits bar (translateY(12px) → 0) */
+/* Credits bar — slide up */
 .ep-credits-bar {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity var(--dur-small) var(--ease-editorial) 0.54s,
-              transform var(--dur-small) var(--ease-editorial) 0.54s;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s;
 }
-
 .ep-is-visible .ep-credits-bar {
-  opacity: 1;
-  transform: none;
+  opacity: 1; transform: none;
 }
 
 
 /* ─────────────────────────────────────────────────────
-   10. GLOBAL MICRO-ANIMATIONS & INTERACTIVE STATES
+   GLOBAL MICRO-ANIMATIONS
 ───────────────────────────────────────────────────── */
 
 /* Section rule — expand on scroll into view */
@@ -865,40 +1027,35 @@
   opacity: 0;
   transition: opacity 0.5s ease 0.2s;
 }
-
 .ep-is-visible .ep-section-rule,
 .ep-visible .ep-section-rule { opacity: 1; }
 
 .ep-rule-line {
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.65s var(--ease-editorial) 0.25s;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
 }
-
 .ep-is-visible .ep-rule-line,
 .ep-visible .ep-rule-line {
   transform: scaleX(1);
 }
-
 .ep-rule-line:last-child { transform-origin: right; }
+.ep-is-visible .ep-rule-line { transform: scaleX(1); }
 
 .ep-rule-text {
   opacity: 0;
-  transition: opacity 0.5s ease 0.6s;
+  transition: opacity 0.5s ease 1s;
 }
-
 .ep-is-visible .ep-rule-text { opacity: 1; }
 
-/* Reg marks — gentle float when visible, disabled on touch/mobile */
+/* Reg marks — float animation only when section is visible, disabled on touch/coarse */
 .ep-reg-mark {
   animation: none;
 }
-
 .ep-is-visible .ep-reg-mark,
 .ep-visible .ep-reg-mark {
   animation: ep-float 6s ease-in-out infinite;
 }
-
 .ep-reg-tr { animation-delay: 3s; }
 .ep-reg-br { animation-delay: 1.5s; }
 
@@ -908,7 +1065,7 @@
   }
 }
 
-/* Shared action buttons hover */
+/* Action buttons — shared hover lift */
 .ep-poster-primary-btn,
 .ep-poster-live-btn,
 .ep-work-all-repos-btn,
@@ -916,17 +1073,34 @@
   transition: background 0.25s ease, border-color 0.25s ease,
               color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .ep-poster-primary-btn:hover,
 .ep-work-all-repos-btn:hover,
 .ep-email-copy-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
+.ep-poster-live-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(169, 15, 24, 0.2);
+}
+
+/* Grain overlay — slow drift for cinematic texture */
+.ep-grain {
+  animation: ep-scanline 8s linear infinite;
+  animation-play-state: paused;
+}
+
+/* Chapter eyebrow fade-in */
+.ep-chapter-eyebrow {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.ep-is-visible .ep-chapter-eyebrow { opacity: 1; transform: none; }
 
 
 /* ─────────────────────────────────────────────────────
-   11. MARQUEE TICKER STRIP
+   MARQUEE TICKER STRIP (bottom of work section)
 ───────────────────────────────────────────────────── */
 
 .ep-ticker-wrap {
@@ -968,7 +1142,7 @@
 
 
 /* ─────────────────────────────────────────────────────
-   12. CUSTOM SCROLLBAR
+   CUSTOM SCROLLBAR (cinematic minimal)
 ───────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar { width: 4px; }
@@ -978,115 +1152,21 @@
 
 
 /* ─────────────────────────────────────────────────────
-   13. MOBILE TOUCH REFINEMENTS (@media max-width: 768px)
+   REDUCED MOTION — respect system preference
 ───────────────────────────────────────────────────── */
-
-@media (max-width: 768px) {
-  /* Reduce movement distances for touch viewports */
-  .ep-headline-not,
-  .ep-headline-just,
-  .ep-headline-code,
-  .ep-stack-mega-title span,
-  .ep-devlog-title,
-  .ep-still-line-1,
-  .ep-still-line-2,
-  .ep-still-line-3,
-  .ep-lf-lets,
-  .ep-lf-build {
-    transform: translateY(14px);
-  }
-
-  .ep-person-pull-quote,
-  .ep-person-body,
-  .ep-person-hinglish,
-  .ep-stack-lead,
-  .ep-devlog-lead,
-  .ep-still-para,
-  .ep-lastframe-sub {
-    transform: translateY(10px);
-  }
-
-  .ep-chapter-eyebrow,
-  .ep-group-label-row {
-    transform: translateX(-8px);
-  }
-
-  .ep-focus-block,
-  .ep-destination-card {
-    transform: translateX(10px);
-  }
-
-  .ep-log-entry {
-    transform: translateY(10px) translateX(-8px);
-  }
-
-  .ep-currently-item,
-  .ep-social-card {
-    transform: translateY(12px) scale(0.99);
-  }
-
-  /* Reset on visible */
-  .ep-is-visible .ep-headline-not,
-  .ep-is-visible .ep-headline-just,
-  .ep-is-visible .ep-headline-code,
-  .ep-is-visible .ep-stack-mega-title span,
-  .ep-is-visible .ep-devlog-title,
-  .ep-still-section.ep-visible .ep-still-line-1,
-  .ep-still-section.ep-visible .ep-still-line-2,
-  .ep-still-section.ep-visible .ep-still-line-3,
-  .ep-is-visible .ep-lf-lets,
-  .ep-is-visible .ep-lf-build,
-  .ep-is-visible .ep-person-pull-quote,
-  .ep-is-visible .ep-person-body,
-  .ep-is-visible .ep-person-hinglish,
-  .ep-is-visible .ep-stack-lead,
-  .ep-is-visible .ep-devlog-lead,
-  .ep-still-section.ep-visible .ep-still-para,
-  .ep-is-visible .ep-lastframe-sub,
-  .ep-is-visible .ep-chapter-eyebrow,
-  .ep-visible .ep-chapter-eyebrow,
-  .ep-group-revealed .ep-group-label-row,
-  .ep-is-visible .ep-focus-block,
-  .ep-is-visible .ep-destination-card,
-  .ep-log-entry.ep-entry-revealed,
-  .ep-still-section.ep-visible .ep-currently-item,
-  .ep-is-visible .ep-social-card {
-    transform: none;
-  }
-}
-
-
-/* ─────────────────────────────────────────────────────
-   14. REDUCED MOTION — System accessibility preference
-───────────────────────────────────────────────────── */
-
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
   [data-reveal],
-  .cinematic-nav-overlay,
-  .akshay-block .giant-word,
-  .sharma-block .giant-word,
-  .hero-portrait-stage,
-  .editorial-meta-box,
-  .hero-scroll-indicator,
   .ep-headline-not, .ep-headline-just, .ep-headline-code,
   .ep-person-pull-quote, .ep-person-body, .ep-focus-list li,
-  .ep-destination-card, .ep-stack-row, .ep-log-entry,
-  .ep-still-line-1, .ep-still-line-2, .ep-still-line-3,
-  .ep-still-para, .ep-currently-item, .ep-lf-lets,
-  .ep-lf-build, .ep-social-card, .ep-email-block,
-  .ep-chapter-eyebrow, .ep-section-rule, .ep-rule-line {
+  .ep-destination-card, .ep-work-title-built, .ep-work-title-different,
+  .ep-poster, .ep-stack-row, .ep-log-entry, .ep-still-line-1,
+  .ep-still-line-2, .ep-still-line-3, .ep-still-para, .ep-currently-item,
+  .ep-lf-lets, .ep-lf-build, .ep-social-card, .ep-email-block,
+  .ep-chapter-eyebrow, .ep-section-rule {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    clip-path: none !important;
   }
 }

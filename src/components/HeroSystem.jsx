@@ -2,6 +2,68 @@ import React, { useEffect, useRef } from 'react'
 
 function HeroSystem() {
   const heroRef = useRef(null)
+  const nameRef = useRef(null)
+  const detailsRef = useRef(null)
+  const portraitRef = useRef(null)
+
+  useEffect(() => {
+    let ticking = false
+    let cachedHeroHeight = heroRef.current ? heroRef.current.offsetHeight : window.innerHeight || 900
+
+    const handleResize = () => {
+      if (heroRef.current) {
+        cachedHeroHeight = heroRef.current.offsetHeight
+      }
+    }
+    window.addEventListener('resize', handleResize, { passive: true })
+
+    const updateTransforms = () => {
+      const scrollY = window.scrollY
+      const heroHeight = cachedHeroHeight
+      
+      // Stop work completely if hero is out of view
+      if (scrollY > heroHeight * 1.25) {
+        ticking = false
+        return
+      }
+
+      const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1.2)
+      const textTranslateX = progress * 110
+      const textTranslateY = progress * 30
+      const textScale = 1 + progress * 0.02
+      const textOpacity = 1 - progress * 0.15
+      const portraitTranslateY = progress * 35
+      const labelTranslateY = -progress * 25
+
+      if (nameRef.current) {
+        nameRef.current.style.transform = `translate3d(${textTranslateX}px, ${textTranslateY}px, 0) scale(${textScale})`
+        nameRef.current.style.opacity = textOpacity
+      }
+      if (portraitRef.current) {
+        portraitRef.current.style.transform = `translate3d(-50%, ${portraitTranslateY}px, 0)`
+      }
+      if (detailsRef.current) {
+        detailsRef.current.style.transform = `translate3d(0, ${labelTranslateY}px, 0)`
+      }
+
+      ticking = false
+    }
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateTransforms)
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    updateTransforms()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <section id="hero" ref={heroRef} className="cinematic-hero" aria-label="Hero poster — Akshay Sharma">
@@ -35,9 +97,14 @@ function HeroSystem() {
         </nav>
       </header>
 
-      {/* 3. LAYER 3: GIANT RED EDITORIAL NAME (RESPONSIVE, FULLY VISIBLE) */}
+      {/* 3. LAYER 3: GIANT RED EDITORIAL NAME (RESPONSIVE, FULLY VISIBLE & SCROLL-ANIMATED BEHIND PORTRAIT) */}
       <div
+        ref={nameRef}
         className="giant-name-typography-wrap"
+        style={{
+          transform: 'translate3d(0px, 0px, 0) scale(1)',
+          opacity: 1,
+        }}
         aria-hidden="true"
       >
         <div className="giant-name-row">
@@ -53,7 +120,11 @@ function HeroSystem() {
 
       {/* 4. LAYER 4: REFINED EDITORIAL ANNOTATIONS (SPARSE, CALM, 10% DETAIL) */}
       <div
+        ref={detailsRef}
         className="editorial-details-layer"
+        style={{
+          transform: 'translate3d(0, 0px, 0)',
+        }}
       >
         {/* TOP LEFT: DISCIPLINE & ROLE CLASSIFICATION */}
         <div className="editorial-meta-box top-left-refined">
@@ -87,7 +158,11 @@ function HeroSystem() {
 
       {/* 5. LAYER 5: TRANSPARENT PNG PORTRAIT (UNCHANGED, CENTERED FOREGROUND ANCHOR) */}
       <div
+        ref={portraitRef}
         className="hero-portrait-stage"
+        style={{
+          transform: 'translate3d(-50%, 0px, 0)',
+        }}
       >
         <img
           src={`${import.meta.env.BASE_URL}assets/akshay_suit_cutout.png`}
