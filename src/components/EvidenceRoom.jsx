@@ -24,6 +24,8 @@ const PROJECTS = [
     stack: ['React', 'TypeScript', 'Supabase', 'TanStack Router', 'Vercel', 'Tailwind CSS'],
     screenshot: `${BASE}assets/xrounder_screenshot.jpg`,
     screenshotAlt: 'XRounder — BCA learning platform dashboard',
+    width: 1376,
+    height: 768,
   },
   {
     id: '02',
@@ -45,6 +47,8 @@ const PROJECTS = [
     stack: ['Java', 'OOP Architecture', 'JDBC', 'MySQL', 'Swing UI', 'SQL Schema'],
     screenshot: `${BASE}assets/volunteer_screenshot.jpg`,
     screenshotAlt: 'Volunteer Management System — Java Swing desktop app',
+    width: 896,
+    height: 1200,
   },
   {
     id: '03',
@@ -66,6 +70,8 @@ const PROJECTS = [
     stack: ['Python', 'Tesseract OCR', 'Metadata Parser', 'File System API', 'SQLite'],
     screenshot: `${BASE}assets/smartdrive_screenshot.jpg`,
     screenshotAlt: 'SmartDrive AI — Local intelligent file organizer',
+    width: 1376,
+    height: 768,
   },
   {
     id: '04',
@@ -87,6 +93,8 @@ const PROJECTS = [
     stack: ['TypeScript', 'React', 'AI APIs', 'Vercel'],
     screenshot: `${BASE}assets/wavelength_screenshot.jpg`,
     screenshotAlt: 'WebLength — AI-powered YouTube growth platform',
+    width: 1376,
+    height: 768,
   },
   {
     id: '05',
@@ -108,6 +116,8 @@ const PROJECTS = [
     stack: ['Vanilla JavaScript', 'HTML5', 'CSS3', 'JSON Schema', 'Local Storage'],
     screenshot: `${BASE}assets/dsa_quiz_screenshot.jpg`,
     screenshotAlt: 'DSA & DBMS Quiz Engine — Practice interface',
+    width: 1376,
+    height: 768,
   },
 ]
 
@@ -293,7 +303,10 @@ function EvidenceRoom() {
                         src={project.screenshot}
                         alt={project.screenshotAlt}
                         className="er-window-img"
+                        width={project.width || 1376}
+                        height={project.height || 768}
                         loading="lazy"
+                        decoding="async"
                       />
                       <div className="er-window-overlay">
                         <span className="er-overlay-btn">

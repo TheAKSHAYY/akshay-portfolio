@@ -227,7 +227,6 @@
   transform: translateY(60px) skewY(2deg);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .ep-is-visible .ep-headline-not {
@@ -944,12 +943,22 @@
 }
 .ep-is-visible .ep-rule-text { opacity: 1; }
 
-/* Reg marks — float animation */
+/* Reg marks — float animation only when section is visible, disabled on touch/coarse */
 .ep-reg-mark {
+  animation: none;
+}
+.ep-is-visible .ep-reg-mark,
+.ep-visible .ep-reg-mark {
   animation: ep-float 6s ease-in-out infinite;
 }
 .ep-reg-tr { animation-delay: 3s; }
 .ep-reg-br { animation-delay: 1.5s; }
+
+@media (max-width: 768px), (pointer: coarse) {
+  .ep-reg-mark {
+    animation: none !important;
+  }
+}
 
 /* Action buttons — shared hover lift */
 .ep-poster-primary-btn,

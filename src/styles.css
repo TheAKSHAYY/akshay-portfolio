@@ -103,7 +103,11 @@ kbd {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: var(--bg-black, #080808);
+}
+
+.custom-cursor-follower:not(.has-label) .cursor-label-badge {
+  display: none !important;
 }
 
 .section-container {

@@ -17,7 +17,9 @@ import './portfolio_polish.css'
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const [showStickyNav, setShowStickyNav] = useState(false)
+  const [showBackToTop, setShowBackToTop] = useState(false)
   const stickyNavRef = useRef(false)
+  const backToTopRef = useRef(false)
 
   useEffect(() => {
     // 1. IntersectionObserver for active section tracking (zero forced reflow, zero offsetTop reads)
@@ -41,15 +43,22 @@ export default function App() {
       if (el) observer.observe(el)
     })
 
-    // 2. Throttled scroll check for sticky navbar toggle ONLY (no DOM layout reading)
+    // 2. Single unified throttled scroll check for sticky navbar and back to top
     let ticking = false
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const isSticky = window.scrollY > 120
+          const scrollY = window.scrollY
+          const isSticky = scrollY > 120
+          const isBackToTop = scrollY > 450
+
           if (isSticky !== stickyNavRef.current) {
             stickyNavRef.current = isSticky
             setShowStickyNav(isSticky)
+          }
+          if (isBackToTop !== backToTopRef.current) {
+            backToTopRef.current = isBackToTop
+            setShowBackToTop(isBackToTop)
           }
           ticking = false
         })
@@ -81,7 +90,7 @@ export default function App() {
       </main>
 
       <TheLastFrameSection />
-      <BackToTop />
+      <BackToTop visible={showBackToTop} />
     </div>
   )
 }

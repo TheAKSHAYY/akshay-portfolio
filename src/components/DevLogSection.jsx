@@ -99,26 +99,48 @@ function DevLogSection() {
 
   // Scroll-driven line draw via GPU-accelerated transform (scaleY) with zero React re-renders
   useEffect(() => {
+    if (!sectionRef.current) return
+
+    let inView = false
+    let cachedSectionH = sectionRef.current.offsetHeight || 1200
     let ticking = false
 
+    const handleResize = () => {
+      if (sectionRef.current) {
+        cachedSectionH = sectionRef.current.offsetHeight
+      }
+    }
+    window.addEventListener('resize', handleResize, { passive: true })
+
     const updateLine = () => {
-      if (!sectionRef.current || !lineRef.current) {
+      if (!inView || !sectionRef.current || !lineRef.current) {
         ticking = false
         return
       }
       const rect = sectionRef.current.getBoundingClientRect()
       const windowH = window.innerHeight
 
-      // Only perform work if section is in or near viewport
       if (rect.bottom > 0 && rect.top < windowH) {
-        const sectionH = sectionRef.current.offsetHeight
-        const progress = Math.max(0, Math.min(1, (windowH - rect.top) / (sectionH + windowH * 0.3)))
+        const progress = Math.max(0, Math.min(1, (windowH - rect.top) / (cachedSectionH + windowH * 0.3)))
         lineRef.current.style.transform = `translateX(-50%) scaleY(${progress})`
       }
       ticking = false
     }
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting
+        if (inView && sectionRef.current) {
+          cachedSectionH = sectionRef.current.offsetHeight
+          updateLine()
+        }
+      },
+      { rootMargin: '150px 0px 150px 0px' }
+    )
+    observer.observe(sectionRef.current)
+
     const handleScroll = () => {
+      if (!inView) return
       if (!ticking) {
         window.requestAnimationFrame(updateLine)
         ticking = true
@@ -128,7 +150,11 @@ function DevLogSection() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     updateLine()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return (

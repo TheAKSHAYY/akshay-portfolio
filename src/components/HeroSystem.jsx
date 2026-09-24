@@ -8,11 +8,18 @@ function HeroSystem() {
 
   useEffect(() => {
     let ticking = false
-    const getHeroHeight = () => (heroRef.current ? heroRef.current.offsetHeight : window.innerHeight || 900)
+    let cachedHeroHeight = heroRef.current ? heroRef.current.offsetHeight : window.innerHeight || 900
+
+    const handleResize = () => {
+      if (heroRef.current) {
+        cachedHeroHeight = heroRef.current.offsetHeight
+      }
+    }
+    window.addEventListener('resize', handleResize, { passive: true })
 
     const updateTransforms = () => {
       const scrollY = window.scrollY
-      const heroHeight = getHeroHeight()
+      const heroHeight = cachedHeroHeight
       
       // Stop work completely if hero is out of view
       if (scrollY > heroHeight * 1.25) {
@@ -52,7 +59,10 @@ function HeroSystem() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     updateTransforms()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return (
@@ -94,7 +104,6 @@ function HeroSystem() {
         style={{
           transform: 'translate3d(0px, 0px, 0) scale(1)',
           opacity: 1,
-          willChange: 'transform, opacity',
         }}
         aria-hidden="true"
       >
@@ -153,13 +162,14 @@ function HeroSystem() {
         className="hero-portrait-stage"
         style={{
           transform: 'translate3d(-50%, 0px, 0)',
-          willChange: 'transform',
         }}
       >
         <img
           src={`${import.meta.env.BASE_URL}assets/akshay_suit_cutout.png`}
           alt="Akshay Sharma — Software Developer"
           className="portrait-person-cutout"
+          width="1024"
+          height="682"
           loading="eager"
           fetchPriority="high"
           decoding="async"
