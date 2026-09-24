@@ -2,57 +2,61 @@
    MOBILE HERO ART DIRECTION — max-width: 767px
    Desktop is COMPLETELY UNTOUCHED.
 
-   MOBILE APPROACH:
-   - Keep the dark/ivory split background (left dark, right white) like desktop
-   - Portrait stays centered straddling both halves — just like desktop
-   - Name floats over the split — AKSHAY left, SHARMA right like desktop
-   - Info labels repositioned to fit mobile height cleanly
-   - No horizontal overflow, no cropping, no overlapping
+   MOBILE LAYOUT v3 — Clean cinematic, name fully visible, portrait centered:
+   ┌──────────────────────────────┐
+   │ AKSHAY        [NAV]          │  ← Name floats at top-left (dark side)
+   │ SHARMA                       │    over the split background
+   │         [PORTRAIT]           │  ← Portrait centered, anchored to bottom
+   │  // SOFTWARE DEV             │
+   │  JAVA · BACKEND · DSA        │
+   │  BAREILLY · INDIA            │
+   │        SCROLL ↓              │
+   └──────────────────────────────┘
+   Left = dark, Right = ivory, Portrait straddles center.
+   Name is in top-left area, large and bold, always fully visible.
    ========================================================================== */
 
 @media (max-width: 767px) {
 
-  /* ── HERO SHELL ──────────────────────────────────────────────────────────── */
+  /* ══ HERO SHELL ══════════════════════════════════════════════════════════ */
 
   .cinematic-hero {
     height: 100svh;
-    min-height: 540px;
+    min-height: 560px;
     max-height: none;
     overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    background: #080808;
   }
 
-  /* ── SPLIT BACKGROUND — keep it, adapt ratios for portrait screen ── */
+  /* ══ SPLIT BACKGROUND — same dark/ivory split as desktop ═════════════════ */
 
   .hero-split-background {
-    display: flex;  /* restore — was hidden before */
-    flex-direction: row; /* keep left/right split on mobile too */
+    display: flex;
+    flex-direction: row;   /* left dark | right ivory */
   }
 
-  /* Left dark half */
   .bg-dark-side {
     width: 50%;
     height: 100%;
     flex: none;
   }
 
-  /* Right ivory half */
   .bg-ivory-side {
     width: 50%;
     height: 100%;
     flex: none;
   }
 
-  /* Grain stays subtle */
   .film-grain-overlay {
     opacity: 0.04;
     z-index: 3;
   }
 
-  /* ── NAV — compact mobile strip ────────────────────────────────────────── */
+  /* ══ NAV BAR — minimal, absolute, sits at very top ══════════════════════ */
 
   .cinematic-nav-overlay {
     position: absolute;
@@ -61,94 +65,126 @@
     right: 0;
     height: 52px;
     padding: 0 1.1rem;
-    z-index: 25;
+    z-index: 30;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: transparent;
   }
 
-  /* Brand — white, legible on dark side */
   .nav-brand-editorial {
     color: #F1F0EB;
-    font-size: 0.95rem;
-    letter-spacing: 0.2em;
+    font-size: 0.9rem;
+    letter-spacing: 0.22em;
+    z-index: 30;
   }
 
-  /* Hide desktop nav links on mobile */
   .nav-links-editorial {
     display: none;
   }
 
-  /* ── GIANT NAME — keep same left/right split feel ───────────────────────── */
+  /* ══ GIANT NAME — stacked vertically, top-left, always fully readable ════
+     KEY FIX: Stack AKSHAY above SHARMA. Name sits in top-left area where
+     there's guaranteed dark background, no portrait overlap.
+     Font uses vw units so it never overflows regardless of screen width.
+  ══════════════════════════════════════════════════════════════════════════ */
 
   .giant-name-typography-wrap {
     position: absolute;
-    top: 50%;
-    transform: translateY(-48%) !important; /* vertical center — override JS */
+    top: 56px;               /* just below nav */
     left: 0;
     width: 100%;
-    z-index: 6;
+    z-index: 10;
     pointer-events: none;
     user-select: none;
-    display: flex;
-    justify-content: center;
+    transform: none !important;  /* kill desktop JS parallax */
   }
 
   .giant-name-row {
     display: flex;
-    flex-direction: row;          /* AKSHAY left, SHARMA right — same as desktop */
-    align-items: baseline;
-    justify-content: space-between;
+    flex-direction: column;      /* ← STACK vertically: AKSHAY then SHARMA */
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%;
     max-width: 100%;
-    padding: 0 0.9rem;
-    gap: 0.25rem;
+    padding: 0 1.1rem;
+    gap: 0;
     margin: 0;
   }
 
   .name-word-block {
-    display: flex;
-    flex-direction: column;
+    display: block;
     position: static;
+    line-height: 1;
   }
 
   .name-word-block.akshay-block {
     align-items: flex-start;
+    margin-left: 0;
+    margin-bottom: 0;
   }
 
   .name-word-block.sharma-block {
-    align-items: flex-end;
-    margin-left: auto;
+    align-items: flex-start;
+    margin-left: 0;    /* no auto margin — both left aligned */
   }
 
-  /* Name size — large but fits mobile viewport */
+  /* Name text — uses vw so it ALWAYS fits regardless of screen width */
   .giant-word {
-    font-size: clamp(2.6rem, 14.5vw, 4.8rem);
-    line-height: 0.88;
+    font-size: clamp(2.8rem, 17vw, 5rem);
+    line-height: 0.87;
     letter-spacing: -0.03em;
     white-space: nowrap;
-    display: inline-block;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.18);
+    display: block;
+    /* shadow so it reads on both dark and ivory halves */
+    text-shadow:
+      2px 2px 0 rgba(0,0,0,0.25),
+      0 0 40px rgba(0,0,0,0.3);
   }
 
-  /* Easter egg tiny, below AKSHAY */
   .inseen-easter-egg {
-    font-size: 0.58rem;
+    font-size: 0.6rem;
     display: block;
     margin-top: 3px;
-    opacity: 0.75;
+    opacity: 0.7;
+    letter-spacing: 0.06em;
   }
 
-  /* ── PORTRAIT — centered, straddling split, bottom-anchored ──────────── */
+  /* ══ NAME ENTRANCE ANIMATIONS — smooth slide + fade ═══════════════════════
+     AKSHAY slides from top-left, SHARMA slides from left slightly delayed.
+     Same editorial feel as desktop but adapted for mobile.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  .name-word-block.akshay-block .giant-word {
+    animation: mobileAkshaySlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+
+  .name-word-block.sharma-block .giant-word {
+    animation: mobileSharmaSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+  }
+
+  @keyframes mobileAkshaySlide {
+    from { opacity: 0; transform: translateX(-32px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes mobileSharmaSlide {
+    from { opacity: 0; transform: translateX(32px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ══ PORTRAIT — centered, bottom-anchored, straddles split ══════════════ */
 
   .hero-portrait-stage {
     position: absolute;
     bottom: 0;
-    left: 50%;                              /* center horizontally like desktop */
-    transform: translate3d(-50%, 0, 0) !important; /* override JS parallax */
-    height: clamp(66%, 72vh, 82%);
+    left: 50%;
+    /* CSS specificity override for JS inline transform */
+    transform: translate3d(-50%, 0, 0) !important;
+    /* Height: enough to feel cinematic but leaves room for name at top */
+    height: clamp(55%, 60vh, 72%);
     width: auto;
-    max-width: 92vw;
+    max-width: 88vw;
     z-index: 8;
     pointer-events: none;
     display: flex;
@@ -167,94 +203,92 @@
     display: block;
   }
 
-  /* Portrait entrance — subtle rise, same feel as desktop */
+  /* Portrait entrance — gentle rise from bottom */
   .hero-portrait-stage {
-    animation: mobilePortraitRise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+    animation: mobilePortraitEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
   }
 
-  @keyframes mobilePortraitRise {
-    from { opacity: 0; transform: translate3d(-50%, 16px, 0); }
-    to   { opacity: 1; transform: translate3d(-50%, 0, 0); }
+  @keyframes mobilePortraitEntrance {
+    from {
+      opacity: 0;
+      transform: translate3d(-50%, 22px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
   }
 
-  /* Name entrance — AKSHAY from left, SHARMA from right */
-  .name-word-block.akshay-block .giant-word {
-    animation: mobileNameLeft 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
-  }
-  .name-word-block.sharma-block .giant-word {
-    animation: mobileNameRight 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
-  }
+  /* ══ EDITORIAL DETAILS LAYER — meta info, absolute positioned ════════════ */
 
-  @keyframes mobileNameLeft {
-    from { opacity: 0; transform: translateX(-22px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes mobileNameRight {
-    from { opacity: 0; transform: translateX(22px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  /* ── EDITORIAL META — repositioned for mobile height ─────────────────── */
-
-  /* All meta boxes remain absolutely positioned — just adjust coords */
   .editorial-details-layer {
     position: absolute;
     inset: 0;
     z-index: 12;
     pointer-events: none;
+    transition: transform 0.1s linear;
   }
 
   .editorial-meta-box {
     position: absolute;
   }
 
-  /* TOP LEFT — role / discipline, below nav */
+  /* TOP LEFT — role + discipline badge, just below the name block.
+     Name takes ~2 lines at ~17vw = ~136px on 390px screen.
+     So role block sits at roughly top: 56px + 136px + 12px = ~204px */
   .top-left-refined {
-    top: 60px;
-    left: 1rem;
+    top: calc(56px + 17vw * 2 + 18px);  /* dynamically below 2-line name */
+    left: 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    animation: mobileMetaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
   }
 
   .category-sub-tag {
     font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    color: #F1F0EB;
+    letter-spacing: 0.2em;
+    color: rgba(241, 240, 235, 0.55);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
   }
 
   .role-focus-tag {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
     letter-spacing: 0.14em;
-    color: #D6D2CA;
+    color: #F1F0EB;
+    font-weight: 700;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
   }
 
   .red-accent-dash-line {
-    width: 20px;
+    width: 22px;
     height: 1.5px;
     margin-top: 5px;
+    background: #A90F18;
   }
 
-  /* MID RIGHT — hide tech list (too crowded on mobile) */
+  /* MID RIGHT — hide on mobile */
   .mid-right-refined {
     display: none;
   }
 
-  /* BOTTOM LEFT — quote + location, above scroll */
+  /* BOTTOM LEFT — quote + location, above scroll prompt */
   .bottom-left-refined {
-    bottom: 52px;
-    left: 1rem;
-    max-width: 160px;
+    bottom: 46px;
+    left: 1.1rem;
+    max-width: 155px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    animation: mobileMetaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both;
   }
 
   .clean-hero-quote {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     line-height: 1.35;
-    color: rgba(241, 240, 235, 0.85);
+    color: rgba(241, 240, 235, 0.8);
     font-style: italic;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
 
   .location-badge {
@@ -263,39 +297,70 @@
     color: #9B968E;
   }
 
-  /* Info layer staggered reveal */
-  .top-left-refined {
-    animation: mobileMetaFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-  }
-  .bottom-left-refined {
-    animation: mobileMetaFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both;
-  }
-
-  @keyframes mobileMetaFade {
-    from { opacity: 0; transform: translateY(10px); }
+  @keyframes mobileMetaReveal {
+    from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── SCROLL INDICATOR ────────────────────────────────────────────────── */
+  /* ══ SCROLL INDICATOR ════════════════════════════════════════════════════ */
 
   .hero-scroll-indicator {
     position: absolute;
-    bottom: 14px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 20;
     pointer-events: auto;
-    animation: mobileMetaFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.78s both;
+    animation: mobileMetaReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.82s both;
   }
 
   .scroll-text {
     font-size: 0.6rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
   }
 
-  /* ── TOUCH PERFORMANCE FIXES ─────────────────────────────────────────── */
+  /* ══ COOL TEXT ACCENTS — editorial overlays (mobile only) ════════════════
+     These add character to the mobile composition without touching desktop.
+  ══════════════════════════════════════════════════════════════════════════ */
 
-  /* Border trace hover → disable on touch (fires on tap and sticks) */
+  /* Small vertical "SDE TRAJECTORY" text on right side, like a spine label */
+  .mid-right-refined {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    bottom: auto;
+    top: 58px;
+    right: 0.9rem;
+  }
+
+  /* Show just the first 3 tech labels on mobile — clean, not cluttered */
+  .tech-vertical-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #080808;   /* dark text on ivory side */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Hide Devanagari badges on mobile (too small) */
+  .vintage-script-badge-clean {
+    display: none;
+  }
+
+  /* Only show first 3 tech labels */
+  .mid-right-refined .tech-vertical-label:nth-child(n+4) {
+    display: none;
+  }
+
+  .mid-right-refined {
+    animation: mobileMetaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+  }
+
+  /* ══ TOUCH — disable expensive hover pseudo effects on mobile ════════════ */
+
   .ep-poster:hover::after,
   .er-window-frame:hover::after {
     clip-path: inset(0 100% 100% 0);
@@ -306,67 +371,73 @@
   .er-stack-tag::after {
     transition: none;
   }
-
-  /* Section number flip — still works, just no 3D perspective quirks on low-end */
-  .ep-is-visible .ep-chapter-num,
-  .ep-visible .ep-chapter-num {
-    transform-style: flat;
-  }
 }
 
-/* ── 480px: slightly tighter portrait and name ────────────────────────── */
+/* ══ 480px: tighten portrait, keep name size ═══════════════════════════════ */
 @media (max-width: 480px) {
   .giant-word {
-    font-size: clamp(2.3rem, 15.5vw, 4rem);
+    font-size: clamp(2.6rem, 18vw, 4.5rem);
   }
 
   .hero-portrait-stage {
-    height: clamp(58%, 68vh, 76%);
-    max-width: 95vw;
-  }
-
-  .bottom-left-refined {
-    bottom: 46px;
-    max-width: 140px;
-  }
-
-  .clean-hero-quote {
-    font-size: 0.72rem;
-  }
-}
-
-/* ── 360px: tightest small phone ────────────────────────────────────────── */
-@media (max-width: 360px) {
-  .giant-word {
-    font-size: clamp(2.1rem, 17vw, 3.6rem);
-  }
-
-  .giant-name-row {
-    padding: 0 0.65rem;
+    height: clamp(50%, 58vh, 68%);
+    max-width: 92vw;
   }
 
   .top-left-refined {
-    top: 56px;
-    left: 0.75rem;
+    top: calc(56px + 18vw * 2 + 14px);
   }
 
   .bottom-left-refined {
-    bottom: 42px;
-    left: 0.75rem;
+    bottom: 40px;
+    max-width: 140px;
+  }
+}
+
+/* ══ 360px: smallest phones — scale everything down ═══════════════════════ */
+@media (max-width: 360px) {
+  .giant-word {
+    font-size: clamp(2.4rem, 19.5vw, 4rem);
+  }
+
+  .giant-name-row {
+    padding: 0 0.85rem;
+  }
+
+  .hero-portrait-stage {
+    height: clamp(48%, 54vh, 65%);
+    max-width: 94vw;
+  }
+
+  .top-left-refined {
+    left: 0.85rem;
+    top: calc(56px + 19.5vw * 2 + 10px);
+  }
+
+  .bottom-left-refined {
+    bottom: 36px;
+    left: 0.85rem;
     max-width: 120px;
   }
 
   .role-focus-tag {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     letter-spacing: 0.1em;
+  }
+
+  .clean-hero-quote {
+    font-size: 0.7rem;
   }
 }
 
-/* ── Override JS parallax transform on portrait specifically on mobile ─── */
+/* ══ JS parallax neutralizer — portrait stays centered on all mobile ═══════ */
 @media (max-width: 767px) {
-  /* The JS injects transform3d via inline style — neutralize on mobile.
-     The mobilePortraitRise animation handles the entrance instead. */
   .hero-portrait-stage[style] {
     transform: translate3d(-50%, 0, 0) !important;
+  }
+
+  /* Name wrap — neutralize JS inline transform too */
+  .giant-name-typography-wrap[style] {
+    transform: none !important;
   }
 }
