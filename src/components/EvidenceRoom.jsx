@@ -123,7 +123,10 @@ const PROJECTS = [
 
 function EvidenceRoom() {
   const [activeFilter, setActiveFilter] = useState('ALL')
+  const [sectionVisible, setSectionVisible] = useState(false)
+  const [revealedCards, setRevealedCards] = useState(new Set())
   const sectionRef = useRef(null)
+  const cardRefs = useRef([])
 
   const filteredProjects =
     activeFilter === 'ALL'
@@ -136,8 +139,54 @@ function EvidenceRoom() {
       ? PROJECTS.filter((p) => p.category.includes('FULL-STACK') || p.category.includes('WEB'))
       : PROJECTS
 
+  // Section header reveal
+  useEffect(() => {
+    if (!sectionRef.current) return
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSectionVisible(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.05 }
+    )
+    obs.observe(sectionRef.current)
+    return () => obs.disconnect()
+  }, [])
+
+  // Card-by-card reveal as visitor scrolls through work
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.dataset.cardIdx, 10)
+            setRevealedCards((prev) => {
+              if (prev.has(idx)) return prev
+              const next = new Set(prev)
+              next.add(idx)
+              return next
+            })
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+    cardRefs.current.forEach((ref) => {
+      if (ref) obs.observe(ref)
+    })
+    return () => obs.disconnect()
+  }, [filteredProjects])
+
   return (
-    <section id="projects" ref={sectionRef} className="er-section" aria-label="Selected Work — Projects">
+    <section
+      id="projects"
+      ref={sectionRef}
+      className={`er-section ${sectionVisible ? 'er-is-visible' : ''}`}
+      aria-label="Selected Work — Projects"
+    >
       {/* Background ambient texture */}
       <div className="er-bg-ambient" aria-hidden="true" />
 
@@ -197,7 +246,11 @@ function EvidenceRoom() {
             return (
               <article
                 key={project.id}
-                className={`er-project-card ${isEven ? 'is-reversed' : ''}`}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                data-card-idx={idx}
+                className={`er-project-card ${isEven ? 'is-reversed' : ''} ${
+                  revealedCards.has(idx) ? 'er-card-revealed' : ''
+                }`}
                 aria-label={`Project: ${project.title}`}
               >
                 {/* Content Column */}

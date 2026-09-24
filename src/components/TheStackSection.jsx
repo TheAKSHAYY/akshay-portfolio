@@ -84,11 +84,13 @@ const skillGroups = [
 
 function TheStackSection() {
   const [expandedId, setExpandedId] = useState(null)
-  const [sectionVisible, setSectionVisible] = useState(true)
+  const [sectionVisible, setSectionVisible] = useState(false)
+  const [revealedGroups, setRevealedGroups] = useState(new Set())
   const sectionRef = useRef(null)
+  const groupRefs = useRef([])
 
+  // Section header reveal
   useEffect(() => {
-    // Subtle one-time reveal
     if (!sectionRef.current) return
     const obs = new IntersectionObserver(
       ([e]) => {
@@ -100,6 +102,31 @@ function TheStackSection() {
       { threshold: 0.05 }
     )
     obs.observe(sectionRef.current)
+    return () => obs.disconnect()
+  }, [])
+
+  // Skill group sequential reveal as visitor scrolls down
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.dataset.groupIdx, 10)
+            setRevealedGroups((prev) => {
+              if (prev.has(idx)) return prev
+              const next = new Set(prev)
+              next.add(idx)
+              return next
+            })
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    )
+    groupRefs.current.forEach((ref) => {
+      if (ref) obs.observe(ref)
+    })
     return () => obs.disconnect()
   }, [])
 
@@ -135,7 +162,9 @@ function TheStackSection() {
         {skillGroups.map((group, gIdx) => (
           <div
             key={group.id}
-            className="ep-skill-group ep-group-revealed"
+            ref={(el) => (groupRefs.current[gIdx] = el)}
+            data-group-idx={gIdx}
+            className={`ep-skill-group ${revealedGroups.has(gIdx) ? 'ep-group-revealed' : ''}`}
           >
             {/* Group label header */}
             <div className="ep-group-label-row">

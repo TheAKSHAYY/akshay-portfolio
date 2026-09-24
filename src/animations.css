@@ -185,6 +185,19 @@
    CHAPTER EYEBROW — animated entrance
 ───────────────────────────────────────────────────── */
 
+.ep-chapter-eyebrow {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ep-is-visible .ep-chapter-eyebrow,
+.ep-visible .ep-chapter-eyebrow {
+  opacity: 1;
+  transform: none;
+}
+
 .ep-chapter-num {
   transition: color 0.3s ease, letter-spacing 0.4s ease;
 }
@@ -199,7 +212,8 @@
   animation-play-state: paused;
 }
 
-.ep-is-visible .ep-chapter-rule {
+.ep-is-visible .ep-chapter-rule,
+.ep-visible .ep-chapter-rule {
   animation-play-state: running;
 }
 
@@ -208,7 +222,8 @@
   transition: letter-spacing 0.5s ease, color 0.3s ease;
 }
 
-.ep-is-visible .ep-chapter-label {
+.ep-is-visible .ep-chapter-label,
+.ep-visible .ep-chapter-label {
   letter-spacing: 0.28em;
   color: rgba(241, 240, 235, 0.65);
 }
@@ -224,19 +239,19 @@
 .ep-headline-code {
   display: block;
   opacity: 0;
-  transform: translateY(60px) skewY(2deg);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-is-visible .ep-headline-not {
   opacity: 1; transform: none; transition-delay: 0s;
 }
 .ep-is-visible .ep-headline-just {
-  opacity: 0.3; transform: none; transition-delay: 0.12s;
+  opacity: 0.35; transform: none; transition-delay: 0.07s;
 }
 .ep-is-visible .ep-headline-code {
-  opacity: 1; transform: none; transition-delay: 0.24s;
+  opacity: 1; transform: none; transition-delay: 0.14s;
 }
 
 /* Glitch effect on headline hover */
@@ -279,8 +294,9 @@
 /* Archival strip — scan-in animation */
 .ep-archival-strip {
   opacity: 0;
-  transform: translateX(-20px);
-  transition: opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s;
+  transform: translateY(12px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.20s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.20s;
 }
 .ep-is-visible .ep-archival-strip {
   opacity: 1; transform: none;
@@ -304,12 +320,12 @@
 .ep-strip-item:hover { color: #F1F0EB; }
 .ep-strip-item:hover::after { transform: scaleX(1); }
 
-/* Pull quote — slide from left with border grow */
+/* Pull quote — slide up with border grow */
 .ep-person-pull-quote {
   opacity: 0;
-  transform: translateX(-30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
   border-left-width: 0;
 }
 .ep-is-visible .ep-person-pull-quote {
@@ -318,28 +334,43 @@
 }
 
 /* Bio paragraphs — fade up staggered */
-.ep-person-body {
+.ep-person-body,
+.ep-person-hinglish {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(14px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ep-person-bio-cols .ep-person-body:nth-child(1) { transition-delay: 0.25s; }
-.ep-person-bio-cols .ep-person-body:nth-child(2) { transition-delay: 0.4s; }
+.ep-person-bio-cols .ep-person-body:nth-child(1) { transition-delay: 0.22s; }
+.ep-person-bio-cols .ep-person-body:nth-child(2) { transition-delay: 0.28s; }
+.ep-person-bio-cols .ep-person-hinglish { transition-delay: 0.34s; }
 
-.ep-is-visible .ep-person-body {
+.ep-is-visible .ep-person-body,
+.ep-is-visible .ep-person-hinglish {
   opacity: 1; transform: none;
 }
 
-/* Focus list — staggered bullet reveals */
+/* Focus block & list items */
+.ep-focus-block {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s;
+}
+.ep-is-visible .ep-focus-block {
+  opacity: 1; transform: none;
+}
+
 .ep-focus-list li {
   opacity: 0;
-  transform: translateX(-20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(12px);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ep-focus-list li:nth-child(1) { transition-delay: 0.35s; }
-.ep-focus-list li:nth-child(2) { transition-delay: 0.45s; }
-.ep-focus-list li:nth-child(3) { transition-delay: 0.55s; }
-.ep-focus-list li:nth-child(4) { transition-delay: 0.65s; }
+.ep-focus-list li:nth-child(1) { transition-delay: 0.36s; }
+.ep-focus-list li:nth-child(2) { transition-delay: 0.40s; }
+.ep-focus-list li:nth-child(3) { transition-delay: 0.44s; }
+.ep-focus-list li:nth-child(4) { transition-delay: 0.48s; }
 
 .ep-is-visible .ep-focus-list li {
   opacity: 1; transform: none;
@@ -348,8 +379,9 @@
 /* Destination card — scale + glow entrance */
 .ep-destination-card {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s,
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
               border-color 0.3s ease, background 0.3s ease;
 }
 .ep-is-visible .ep-destination-card {
@@ -511,31 +543,64 @@
 
 
 /* ─────────────────────────────────────────────────────
-   03 / THE STACK — Row Animations
+   03 / THE STACK — Row Animations & Reveal
 ───────────────────────────────────────────────────── */
 
 .ep-stack-mega-title span {
   display: block;
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ep-stack-mega-title span:nth-child(1) { transition-delay: 0s; }
-.ep-stack-mega-title span:nth-child(2) { transition-delay: 0.15s; }
+.ep-stack-mega-title span:first-child { transition-delay: 0s; }
+.ep-stack-mega-title .ep-crimson { transition-delay: 0.08s; }
 
 .ep-is-visible .ep-stack-mega-title span {
   opacity: 1; transform: none;
 }
-/* Second span (STACK.) stays ivory-full */
-.ep-is-visible .ep-stack-mega-title span:nth-child(1) { opacity: 1; }
 
-/* Stack rows — safe visible state with subtle hover */
-.ep-stack-row {
+.ep-stack-lead {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.14s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.14s;
+}
+.ep-is-visible .ep-stack-lead {
+  opacity: 1; transform: none;
+}
+
+/* Group label row entrance */
+.ep-group-label-row {
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ep-group-revealed .ep-group-label-row {
   opacity: 1;
   transform: none;
-  transition: background 0.25s ease;
 }
+
+/* Stack rows inside groups */
+.ep-skill-group .ep-stack-row {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.25s ease;
+}
+
+.ep-group-revealed .ep-stack-row {
+  opacity: 1;
+  transform: none;
+}
+
+.ep-group-revealed .ep-stack-row:nth-child(1) { transition-delay: 0.05s; }
+.ep-group-revealed .ep-stack-row:nth-child(2) { transition-delay: 0.10s; }
+.ep-group-revealed .ep-stack-row:nth-child(3) { transition-delay: 0.15s; }
+.ep-group-revealed .ep-stack-row:nth-child(4) { transition-delay: 0.20s; }
 
 /* Shimmer line on hover */
 .ep-stack-row {
@@ -615,16 +680,34 @@
    04 / DEVELOPMENT LOG — Timeline Animations
 ───────────────────────────────────────────────────── */
 
-.ep-devlog-title span {
-  display: block;
+.ep-devlog-title {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
+}
+.ep-is-visible .ep-devlog-title {
+  opacity: 1;
+  transform: none;
 }
 
-/* Timeline entries — staggered entrance from left */
+.ep-devlog-lead {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+.ep-is-visible .ep-devlog-lead {
+  opacity: 1;
+  transform: none;
+}
+
+/* Timeline entries — staggered entrance from left + bottom */
 .ep-log-entry {
   opacity: 0;
-  transform: translateX(-30px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(14px) translateX(-14px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-log-entry.ep-entry-revealed {
@@ -717,49 +800,52 @@
   animation: ep-scanline 2s ease-out both;
 }
 
-/* Headline lines — slide from left with skew correction */
+/* Headline lines — subtle upward reveal */
 .ep-still-line-1,
 .ep-still-line-2,
 .ep-still-line-3 {
   opacity: 0;
-  transform: translateX(-60px) skewX(-3deg);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ep-still-section.ep-visible .ep-still-line-1 {
-  opacity: 0.2; transform: none; transition-delay: 0.05s;
+  opacity: 0.25; transform: none; transition-delay: 0s;
 }
 .ep-still-section.ep-visible .ep-still-line-2 {
-  opacity: 0.55; transform: none; transition-delay: 0.18s;
+  opacity: 0.6; transform: none; transition-delay: 0.07s;
 }
 .ep-still-section.ep-visible .ep-still-line-3 {
-  opacity: 1; transform: none; transition-delay: 0.31s;
+  opacity: 1; transform: none; transition-delay: 0.14s;
 }
 
 /* Still para — fade up */
 .ep-still-para {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ep-still-para:nth-child(1) { transition-delay: 0.5s; }
-.ep-still-para:nth-child(2) { transition-delay: 0.65s; }
+.ep-still-para:nth-child(1) { transition-delay: 0.22s; }
+.ep-still-para:nth-child(2) { transition-delay: 0.29s; }
 
 .ep-still-section.ep-visible .ep-still-para {
   opacity: 1; transform: none;
 }
 
-/* Currently items — staggered slide-up */
+/* Currently items — staggered slide-up with subtle scale */
 .ep-currently-item {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(16px) scale(0.985);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              border-left-color 0.25s ease, padding-left 0.3s ease;
 }
-.ep-currently-item:nth-child(1) { transition-delay: 0.7s; }
-.ep-currently-item:nth-child(2) { transition-delay: 0.8s; }
-.ep-currently-item:nth-child(3) { transition-delay: 0.9s; }
-.ep-currently-item:nth-child(4) { transition-delay: 1.0s; }
+.ep-currently-item:nth-child(1) { transition-delay: 0.36s; }
+.ep-currently-item:nth-child(2) { transition-delay: 0.42s; }
+.ep-currently-item:nth-child(3) { transition-delay: 0.48s; }
+.ep-currently-item:nth-child(4) { transition-delay: 0.54s; }
 
 .ep-still-section.ep-visible .ep-currently-item {
   opacity: 1; transform: none;
@@ -767,7 +853,8 @@
 
 /* Currently item hover */
 .ep-currently-item {
-  transition: opacity 0.5s ease, transform 0.5s ease,
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
               border-left-color 0.25s ease, padding-left 0.3s ease;
 }
 .ep-currently-item:hover {
@@ -785,7 +872,7 @@
 /* Devanagari line — typewriter blink cursor */
 .ep-still-devanagari {
   opacity: 0;
-  transition: opacity 0.5s ease 1.2s;
+  transition: opacity 0.5s ease 0.6s;
 }
 .ep-still-section.ep-visible .ep-still-devanagari {
   opacity: 1;
@@ -805,17 +892,17 @@
 /* LET'S — fade in light */
 .ep-lf-lets {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
 }
 
 /* BUILD. — crimson dramatic entrance */
 .ep-lf-build {
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.11s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.11s;
 }
 
 .ep-is-visible .ep-lf-lets { opacity: 1; transform: none; }
@@ -852,16 +939,28 @@
 /* Subtext — fade in */
 .ep-lastframe-sub {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s ease 0.45s, transform 0.7s ease 0.45s;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
 }
 .ep-is-visible .ep-lastframe-sub { opacity: 1; transform: none; }
+
+/* CTA link */
+.ep-lastframe-cta-link {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+              color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.ep-is-visible .ep-lastframe-cta-link { opacity: 1; transform: none; }
 
 /* Email block — cinematic wipe */
 .ep-email-block {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease 0.6s, transform 0.7s ease 0.6s;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s;
 }
 .ep-is-visible .ep-email-block { opacity: 1; transform: none; }
 
@@ -879,14 +978,14 @@
 /* Social cards — staggered slide up */
 .ep-social-card {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.25s ease, background 0.25s ease;
 }
-.ep-social-card:nth-child(1) { transition-delay: 0.75s; }
-.ep-social-card:nth-child(2) { transition-delay: 0.88s; }
-.ep-social-card:nth-child(3) { transition-delay: 1.01s; }
+.ep-social-card:nth-child(1) { transition-delay: 0.36s; }
+.ep-social-card:nth-child(2) { transition-delay: 0.43s; }
+.ep-social-card:nth-child(3) { transition-delay: 0.50s; }
 
 .ep-is-visible .ep-social-card {
   opacity: 1; transform: none;
@@ -910,8 +1009,9 @@
 /* Credits bar — slide up */
 .ep-credits-bar {
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease 1.2s, transform 0.6s ease 1.2s;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s;
 }
 .ep-is-visible .ep-credits-bar {
   opacity: 1; transform: none;
@@ -925,14 +1025,19 @@
 /* Section rule — expand on scroll into view */
 .ep-section-rule {
   opacity: 0;
-  transition: opacity 0.6s ease 0.4s;
+  transition: opacity 0.5s ease 0.2s;
 }
-.ep-is-visible .ep-section-rule { opacity: 1; }
+.ep-is-visible .ep-section-rule,
+.ep-visible .ep-section-rule { opacity: 1; }
 
 .ep-rule-line {
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+.ep-is-visible .ep-rule-line,
+.ep-visible .ep-rule-line {
+  transform: scaleX(1);
 }
 .ep-rule-line:last-child { transform-origin: right; }
 .ep-is-visible .ep-rule-line { transform: scaleX(1); }

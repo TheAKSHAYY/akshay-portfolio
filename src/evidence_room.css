@@ -660,3 +660,119 @@
     justify-content: center;
   }
 }
+
+/* ─── SCROLL REVEAL SYSTEM — EVIDENCE ROOM ────────────────────────────── */
+
+.er-eyebrow {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.er-headline {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.06s;
+}
+
+.er-lead {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+
+.er-filters {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
+}
+
+.er-is-visible .er-eyebrow,
+.er-is-visible .er-headline,
+.er-is-visible .er-lead,
+.er-is-visible .er-filters {
+  opacity: 1;
+  transform: none;
+}
+
+/* Individual project cards */
+.er-card-content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.er-card-visual {
+  opacity: 0;
+  transform: translateY(24px) scale(0.985);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.07s,
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.07s;
+}
+
+.er-card-revealed .er-card-content {
+  opacity: 1;
+  transform: none;
+}
+
+.er-card-revealed .er-card-visual {
+  opacity: 1;
+  transform: none;
+}
+
+/* Footer reveal */
+.er-footer-divider {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.er-footer-content {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.er-is-visible .er-footer-divider {
+  transform: scaleX(1);
+}
+
+.er-is-visible .er-footer-content {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .er-eyebrow,
+  .er-headline,
+  .er-lead,
+  .er-filters,
+  .er-card-content,
+  .er-footer-content {
+    transform: translateY(10px);
+  }
+
+  .er-card-visual {
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .er-eyebrow,
+  .er-headline,
+  .er-lead,
+  .er-filters,
+  .er-card-content,
+  .er-card-visual,
+  .er-footer-divider,
+  .er-footer-content {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
