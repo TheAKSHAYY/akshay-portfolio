@@ -138,7 +138,7 @@ export default function HeroSystem() {
         }}
       >
         <img
-          src="/assets/akshay_suit_cutout.png"
+          src={`${import.meta.env.BASE_URL}assets/akshay_suit_cutout.png`}
           alt="Akshay Sharma — Software Developer"
           className="portrait-person-cutout"
           loading="eager"
