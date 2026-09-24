@@ -106,9 +106,6 @@ kbd {
   background: var(--bg-black, #080808);
 }
 
-.custom-cursor-follower:not(.has-label) .cursor-label-badge {
-  display: none !important;
-}
 
 .section-container {
   max-width: var(--max-width);
@@ -126,7 +123,5 @@ kbd {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .custom-cursor-follower {
-    display: none !important;
-  }
+
 }

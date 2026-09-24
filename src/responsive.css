@@ -1027,26 +1027,6 @@ html {
 }
 
 
-/* ═══════════════════════════════════════════════════
-   CUSTOM CURSOR — disable on touch devices
-═══════════════════════════════════════════════════ */
-
-@media (hover: none) and (pointer: coarse) {
-  .custom-cursor-follower,
-  .custom-cursor-dot {
-    display: none !important;
-  }
-
-  body {
-    cursor: auto !important;
-  }
-
-  /* Restore pointer for interactive elements */
-  a, button, [role="listitem"][tabindex] {
-    cursor: pointer;
-  }
-}
-
 
 /* ═══════════════════════════════════════════════════
    SCROLL INDICATOR — tablet hide
@@ -1085,7 +1065,6 @@ html {
 
 @media print {
   .cinematic-sticky-navbar,
-  .custom-cursor-follower,
   .ep-grain,
   .ep-ticker-wrap,
   .hero-scroll-indicator {

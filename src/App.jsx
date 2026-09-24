@@ -7,7 +7,6 @@ import TheStackSection from './components/TheStackSection'
 import DevLogSection from './components/DevLogSection'
 import StillBuildingSection from './components/StillBuildingSection'
 import TheLastFrameSection from './components/TheLastFrameSection'
-import CustomCursor from './components/CustomCursor'
 import BackToTop from './components/BackToTop'
 import ScrollProgressBar from './components/ScrollProgressBar'
 import './styles.css'
@@ -79,7 +78,7 @@ export default function App() {
   return (
     <div className="sde-portfolio-app">
       <ScrollProgressBar />
-      <CustomCursor />
+
       {showStickyNav && <SystemNavbar activeSection={activeSection} />}
 
       <main className="sde-main-content">

@@ -2175,49 +2175,8 @@
   color: #94a3b8;
 }
 
-/* ==========================================================================
-   CUSTOM CURSOR (CLEAN SLATE & TERRACOTTA)
-   ========================================================================== */
-.custom-cursor-follower {
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transform: translate3d(-100px, -100px, 0);
-  will-change: transform;
-}
 
-.cursor-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #0f172a;
-  box-shadow: 0 0 6px rgba(15, 23, 42, 0.4);
-  transition: transform 0.2s, background-color 0.2s;
-}
 
-.custom-cursor-follower.is-active .cursor-dot {
-  transform: scale(1.6);
-  background: var(--accent-java);
-  box-shadow: 0 0 10px rgba(231, 111, 81, 0.5);
-}
-
-.cursor-label-badge {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #ffffff;
-  background: #0f172a;
-  padding: 2px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
 
 /* --- RESPONSIVE MEDIA QUERIES --- */
 @media (max-width: 1024px) {
