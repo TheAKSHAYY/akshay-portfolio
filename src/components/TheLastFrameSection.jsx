@@ -66,9 +66,9 @@ function TheLastFrameSection() {
         </div>
 
         <h2 className="ep-lastframe-headline">
-          <span className="ep-lf-lets">THE WORK</span>
+          <span className="ep-lf-lets">LET'S</span>
           <br />
-          <span className="ep-lf-build ep-crimson">CONTINUES.</span>
+          <span className="ep-lf-build ep-crimson">BUILD.</span>
         </h2>
 
         <p className="ep-lastframe-sub">
