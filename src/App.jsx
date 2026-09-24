@@ -9,6 +9,7 @@ import StillBuildingSection from './components/StillBuildingSection'
 import TheLastFrameSection from './components/TheLastFrameSection'
 import CustomCursor from './components/CustomCursor'
 import BackToTop from './components/BackToTop'
+import ScrollProgressBar from './components/ScrollProgressBar'
 import './styles.css'
 import './editorial_lower.css'
 import './evidence_room.css'
@@ -77,6 +78,7 @@ export default function App() {
 
   return (
     <div className="sde-portfolio-app">
+      <ScrollProgressBar />
       <CustomCursor />
       {showStickyNav && <SystemNavbar activeSection={activeSection} />}
 
