@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 /* ─── REAL GITHUB PROJECTS DATA ─────────────────────────────────────────── */
+const BASE = import.meta.env.BASE_URL
+
 const PROJECTS = [
   {
     id: '01',
@@ -20,7 +22,7 @@ const PROJECTS = [
       'Client-side state management with TanStack Router',
     ],
     stack: ['React', 'TypeScript', 'Supabase', 'TanStack Router', 'Vercel', 'Tailwind CSS'],
-    screenshot: '/assets/xrounder_screenshot.jpg',
+    screenshot: `${BASE}assets/xrounder_screenshot.jpg`,
     screenshotAlt: 'XRounder — Production learning platform dashboard',
   },
   {
@@ -41,7 +43,7 @@ const PROJECTS = [
       'Event-driven Swing GUI for real-time dispatch and filtering',
     ],
     stack: ['Java', 'OOP Architecture', 'JDBC', 'MySQL', 'Swing UI', 'SQL Schema'],
-    screenshot: '/assets/volunteer_screenshot.jpg',
+    screenshot: `${BASE}assets/volunteer_screenshot.jpg`,
     screenshotAlt: 'Volunteer Management System — Java Swing desktop app',
   },
   {
@@ -62,7 +64,7 @@ const PROJECTS = [
       'Rule-based metadata categorizer with instant keyword indexing',
     ],
     stack: ['Python', 'Tesseract OCR', 'Metadata Parser', 'File System API', 'SQLite'],
-    screenshot: '/assets/smartdrive_screenshot.jpg',
+    screenshot: `${BASE}assets/smartdrive_screenshot.jpg`,
     screenshotAlt: 'SmartDrive AI — Local intelligent file organizer',
   },
   {
@@ -83,7 +85,7 @@ const PROJECTS = [
       'Clean reactive state handling with TypeScript and React',
     ],
     stack: ['TypeScript', 'Web Audio API', 'React', 'HTML5 Canvas', 'Vercel'],
-    screenshot: '/assets/wavelength_screenshot.jpg',
+    screenshot: `${BASE}assets/wavelength_screenshot.jpg`,
     screenshotAlt: 'Wavelength — Interactive real-time audio visualizer',
   },
   {
@@ -104,7 +106,7 @@ const PROJECTS = [
       'Instant score evaluation, timer controls, and detailed solution breakdowns',
     ],
     stack: ['Vanilla JavaScript', 'HTML5', 'CSS3', 'JSON Schema', 'Local Storage'],
-    screenshot: '/assets/dsa_quiz_screenshot.jpg',
+    screenshot: `${BASE}assets/dsa_quiz_screenshot.jpg`,
     screenshotAlt: 'DSA & DBMS Quiz Engine — Practice interface',
   },
 ]
