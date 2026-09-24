@@ -1,0 +1,399 @@
+/* ==========================================================================
+   MOBILE HERO ART DIRECTION — max-width: 767px
+   Desktop is COMPLETELY UNTOUCHED. This file only applies ≤ 767px.
+   Approach: replaces the absolute-positioned desktop composition
+   with a full-dark stacked vertical cinematic layout.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+
+  /* ── HERO SHELL ──────────────────────────────────────────────────────────── */
+
+  .cinematic-hero {
+    /* Full dark background — no split. Name + portrait do the work */
+    height: auto;
+    min-height: 100svh;
+    max-height: none;
+    background: #080808;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Hide the desktop split background entirely on mobile */
+  .hero-split-background {
+    display: none;
+  }
+
+  /* Solid dark canvas replaces the split */
+  .cinematic-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(169, 15, 24, 0.07) 0%, transparent 70%),
+      #080808;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Thin grain texture — keep the cinematic feel */
+  .film-grain-overlay {
+    opacity: 0.04;
+    z-index: 1;
+  }
+
+  /* ── NAV ──────────────────────────────────────────────────────────────────── */
+
+  .cinematic-nav-overlay {
+    position: relative;  /* flow into the page, not absolute */
+    height: 56px;
+    padding: 0 1.25rem;
+    z-index: 25;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* subtle bottom border so it reads as a bar */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+  }
+
+  /* Brand text — white on dark */
+  .nav-brand-editorial {
+    color: #F1F0EB;
+    font-size: 1rem;
+    letter-spacing: 0.22em;
+  }
+
+  /* Desktop links → hidden, hamburger already hidden (no custom cursor either) */
+  .nav-links-editorial {
+    display: none;
+  }
+
+  /* ── MOBILE HERO BODY AREA ────────────────────────────────────────────────── */
+  /*
+     LAYOUT STRATEGY (vertical stack, full width):
+     ┌──────────────────────────────┐
+     │  NAV BAR (56px)              │
+     ├──────────────────────────────┤
+     │                              │
+     │   PORTRAIT (centered, top)   │
+     │                              │
+     ├──────────────────────────────┤
+     │  ROLE BADGE                  │
+     │  AKSHAY                      │
+     │  SHARMA                      │
+     │  ─────────────────           │
+     │  JAVA · BACKEND · DSA        │
+     │  // SOFTWARE DEVELOPER       │
+     │  BAREILLY · INDIA            │
+     ├──────────────────────────────┤
+     │  SCROLL ↓                    │
+     └──────────────────────────────┘
+  */
+
+  /* ── PORTRAIT BLOCK ──────────────────────────────────────────────────────── */
+
+  .hero-portrait-stage {
+    /* De-absolute it — normal flow on mobile */
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none !important; /* override JS scroll transform completely */
+    width: 100%;
+    height: clamp(280px, 52vw, 380px);
+    max-width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 3;
+    flex-shrink: 0;
+    /* Push face area slightly right of center — more cinematic */
+    padding-left: 10%;
+  }
+
+  .portrait-person-cutout {
+    height: 100%;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    object-position: top center;
+    /* Slight right-offset to show face prominently */
+    transform: translateX(8%);
+    filter: contrast(1.05) brightness(1.0);
+  }
+
+  /* Portrait entrance animation — gentle rise */
+  .hero-portrait-stage {
+    animation: mobilePortraitRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+
+  @keyframes mobilePortraitRise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NAME + INFO BLOCK ────────────────────────────────────────────────────── */
+
+  /* The giant-name-typography-wrap is absolutely positioned on desktop.
+     On mobile we reposition it as in-flow content under the portrait. */
+  .giant-name-typography-wrap {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none !important; /* kill desktop JS parallax on mobile */
+    width: 100%;
+    z-index: 5;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+    padding: 1.25rem 1.25rem 0;
+    /* Tight top margin — portrait to name feels intentional */
+    margin-top: -12px;
+    background: linear-gradient(to bottom, transparent 0%, #080808 18%);
+  }
+
+  .giant-name-row {
+    /* Stack AKSHAY and SHARMA vertically, full-width, aligned left */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    gap: 0;
+    margin: 0;
+  }
+
+  .name-word-block {
+    display: block;
+    position: static;
+  }
+
+  .name-word-block.akshay-block {
+    align-items: flex-start;
+    margin-bottom: -0.08em; /* tight tracking between lines */
+  }
+
+  .name-word-block.sharma-block {
+    align-items: flex-start;
+    margin-left: 0;
+  }
+
+  /* Giant name text — full-width, no overflow */
+  .giant-word {
+    font-size: clamp(3.2rem, 18.5vw, 5.4rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    display: block;
+  }
+
+  /* Easter egg — keep it tiny, below AKSHAY */
+  .inseen-easter-egg {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  /* AKSHAY slide in from left */
+  .name-word-block.akshay-block .giant-word {
+    animation: mobileNameSlideLeft 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+  }
+  /* SHARMA slide in from right, slight delay */
+  .name-word-block.sharma-block .giant-word {
+    animation: mobileNameSlideRight 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+  }
+
+  @keyframes mobileNameSlideLeft {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes mobileNameSlideRight {
+    from { opacity: 0; transform: translateX(28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ── EDITORIAL DETAILS LAYER (absolutely positioned on desktop) ─────────── */
+  /*
+     On desktop this is position:absolute over the whole hero.
+     On mobile we pull it into normal flow, below the name.
+  */
+  .editorial-details-layer {
+    position: relative;
+    inset: auto;
+    pointer-events: auto;
+    z-index: 5;
+    padding: 1rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* All meta-boxes: reset absolute positions → flow layout */
+  .editorial-meta-box {
+    position: static;
+  }
+
+  /* TOP-LEFT block: role + discipline */
+  .top-left-refined {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(169, 15, 24, 0.35);
+  }
+
+  .category-sub-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(241, 240, 235, 0.6);
+  }
+
+  .role-focus-tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: #F1F0EB;
+    font-weight: 700;
+  }
+
+  .red-accent-dash-line {
+    width: 24px;
+    height: 1.5px;
+    margin-top: 4px;
+  }
+
+  /* MID-RIGHT block (tech list) → hide on mobile, already shown in role-focus-tag */
+  .mid-right-refined {
+    display: none;
+  }
+
+  /* BOTTOM-LEFT block: quote + location */
+  .bottom-left-refined {
+    order: 2;
+    position: static;
+    left: auto;
+    bottom: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .clean-hero-quote {
+    font-size: 0.9rem;
+    color: rgba(241, 240, 235, 0.65);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .location-badge {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: #9B968E;
+  }
+
+  /* Staggered reveal on all detail items */
+  .top-left-refined {
+    animation: mobileInfoFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+  }
+  .bottom-left-refined {
+    animation: mobileInfoFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.62s both;
+  }
+
+  @keyframes mobileInfoFadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL INDICATOR ─────────────────────────────────────────────────────── */
+
+  .hero-scroll-indicator {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 0 1.5rem;
+    z-index: 5;
+    animation: mobileInfoFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+  }
+
+  /* ── DISABLE DESKTOP-ONLY PERFORMANCE COSTS ─────────────────────────────── */
+
+  /* Kill JS scroll parallax: the transforms are applied via inline style in
+     HeroSystem.jsx. On mobile we override them with CSS transform:none on the
+     portrait (handled above) and also on the name wrap. The JS still runs but
+     CSS specificity wins on the portrait; the name wrap is removed from
+     absolute flow so its transform doesn't cause layout shift. */
+
+  /* Disable hover-only hover animations that would fire on tap and get stuck */
+  .ep-poster:hover::after,
+  .er-window-frame:hover::after {
+    clip-path: inset(0 100% 100% 0);
+    transition: none;
+  }
+
+  /* Reduce shimmer cost on tags — still works on hover but won't
+     trigger accidentally on tap/touch */
+  .ep-tech-tag::after,
+  .er-stack-tag::after {
+    transition: none;
+  }
+}
+
+
+/* ── 430px and below: push name slightly tighter ────────────────────────── */
+@media (max-width: 430px) {
+  .hero-portrait-stage {
+    height: clamp(240px, 48vw, 320px);
+  }
+
+  .giant-word {
+    font-size: clamp(3rem, 20vw, 4.8rem);
+  }
+
+  .editorial-details-layer {
+    padding: 0.75rem 1.1rem 1.25rem;
+  }
+}
+
+/* ── 360px and below: tightest mobile ────────────────────────────────────── */
+@media (max-width: 360px) {
+  .hero-portrait-stage {
+    height: clamp(200px, 44vw, 280px);
+  }
+
+  .giant-word {
+    font-size: clamp(2.8rem, 22vw, 4.2rem);
+  }
+
+  .role-focus-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .clean-hero-quote {
+    font-size: 0.82rem;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE: Disable desktop hero parallax JS transforms on portrait
+   The JS in HeroSystem.jsx sets inline style.transform on portraitRef.
+   We override it with CSS only on mobile widths using a stronger selector.
+   ========================================================================== */
+@media (max-width: 767px) {
+  .hero-portrait-stage[style] {
+    /* Override the JS-injected transform3d on mobile */
+    transform: translateY(0) !important;
+  }
+}
