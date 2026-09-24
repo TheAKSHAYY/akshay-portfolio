@@ -64,6 +64,9 @@ export default function ThePersonSection() {
             <p className="ep-person-body">
               The goal is clear: become a capable, thoughtful <strong>software developer / SDE</strong> who writes reliable code and builds things people actually use. Always a project open on the screen.
             </p>
+            <p className="ep-person-hinglish" title="Not just code. I turn ideas into reality.">
+              Sirf code nahi.<br />Ideas ko reality mein turn karta hoon.
+            </p>
           </div>
 
           <div className="ep-focus-block">

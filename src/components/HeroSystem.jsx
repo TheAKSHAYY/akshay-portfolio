@@ -101,8 +101,8 @@ export default function HeroSystem() {
       >
         {/* TOP LEFT: DISCIPLINE & ROLE CLASSIFICATION */}
         <div className="editorial-meta-box top-left-refined">
-          <span className="category-sub-tag">// SOFTWARE DEVELOPER</span>
-          <span className="role-focus-tag">JAVA &bull; BACKEND &bull; DSA</span>
+          <span className="category-sub-tag hero-meta-strong">// SOFTWARE DEVELOPER</span>
+          <span className="role-focus-tag hero-role-strong">JAVA &bull; BACKEND &bull; DSA</span>
           <div className="red-accent-dash-line" />
         </div>
 
@@ -125,7 +125,7 @@ export default function HeroSystem() {
           <p className="clean-hero-quote">
             &ldquo;A better version of me is always in progress.&rdquo;
           </p>
-          <span className="location-badge">DELHI / NCR &middot; INDIA</span>
+          <span className="location-badge">UP, BAREILLY &middot; INDIA</span>
         </div>
       </div>
 

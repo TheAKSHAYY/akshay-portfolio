@@ -1,0 +1,364 @@
+/* ==========================================================================
+   PORTFOLIO POLISH PASS — Art direction + frontend refinements
+   Covers: hero overflow fix, metadata contrast, skill groups,
+           contact CTA, Hinglish style, image fallback, typography
+   ========================================================================== */
+
+
+/* ────────────────────────────────────────────────────────────
+   HERO — NAME OVERFLOW FIX
+   The giant-name-row uses space-between which can clip SHARMA
+   on the right. We constrain + use overflow visible intentionally.
+──────────────────────────────────────────────────────────── */
+
+.giant-name-typography-wrap {
+  /* Ensure it never triggers horizontal scroll */
+  overflow: visible;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.giant-name-row {
+  /* Prevent clipping; use padding to avoid browser edge cuts */
+  overflow: visible;
+  padding: 0 clamp(0.75rem, 3vw, 4rem);
+  gap: clamp(0.5rem, 1.5vw, 2.5rem);
+}
+
+/* Ensure words don't overflow body width on any screen */
+.giant-word {
+  /* Use viewport-relative sizing that never exceeds safe area */
+  font-size: clamp(3rem, 9.5vw, 11rem);
+  max-width: 48vw; /* each word gets half the width to stay safe */
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* On larger screens, allow full editorial size */
+@media (min-width: 1200px) {
+  .giant-word {
+    font-size: clamp(8rem, 10.5vw, 13rem);
+    max-width: none;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   HERO — METADATA CONTRAST IMPROVEMENTS
+   category-sub-tag & role-focus-tag on the dark left side
+   need to be clearly legible without being heavy
+──────────────────────────────────────────────────────────── */
+
+.hero-meta-strong {
+  color: #F1F0EB !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.2em !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-role-strong {
+  color: #d9d4cc !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Location badge — slightly improved visibility */
+.location-badge {
+  color: #b5b0a8 !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em !important;
+}
+
+/* The right-side tech labels on ivory background — darker for readability */
+.tech-vertical-label {
+  color: #1a1715 !important;
+  font-weight: 800 !important;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   SKILLS — GROUPED LAYOUT STYLES
+   New grouped architecture: ep-skill-group, ep-group-label-row
+──────────────────────────────────────────────────────────── */
+
+.ep-stack-grouped {
+  position: relative;
+  z-index: 5;
+  margin-top: 0;
+}
+
+/* Group container */
+.ep-skill-group {
+  border-top: 1px solid rgba(241, 240, 235, 0.08);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.ep-skill-group.ep-group-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Group label row */
+.ep-group-label-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem clamp(2rem, 6vw, 7rem);
+  background: rgba(169, 15, 24, 0.04);
+}
+
+.ep-group-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #A90F18;
+  letter-spacing: 0.1em;
+}
+
+.ep-group-divider {
+  width: 28px;
+  height: 1px;
+  background: rgba(241, 240, 235, 0.18);
+  flex-shrink: 0;
+}
+
+.ep-group-label-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: rgba(241, 240, 235, 0.45);
+  text-transform: uppercase;
+}
+
+/* Items within a group */
+.ep-group-items {
+  /* No extra padding — items have their own */
+}
+
+/* Fix ep-stack-row-head grid for grouped layout (no number column) */
+.ep-skill-group .ep-stack-row-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ep-skill-group .ep-stack-row-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   CONTACT SECTION — "START SOMETHING →" CTA BUTTON
+──────────────────────────────────────────────────────────── */
+
+.ep-lastframe-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #F1F0EB;
+  text-decoration: none;
+  border: 1px solid rgba(169, 15, 24, 0.5);
+  padding: 0.75rem 1.75rem;
+  margin-bottom: 2.5rem;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  position: relative;
+  z-index: 5;
+}
+
+.ep-lastframe-cta-link:hover {
+  background: #A90F18;
+  border-color: #A90F18;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   ABOUT SECTION — HINGLISH PERSONALITY STATEMENT
+──────────────────────────────────────────────────────────── */
+
+.ep-person-hinglish {
+  font-family: var(--font-serif, 'Bodoni Moda', serif);
+  font-style: italic;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.4;
+  color: rgba(169, 15, 24, 0.85);
+  margin-top: 0.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid rgba(169, 15, 24, 0.3);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   TYPOGRAPHY & CONTRAST — ACCESSIBILITY POLISH PASS
+   Small text improvements across sections
+──────────────────────────────────────────────────────────── */
+
+/* Project descriptions — slightly lighter */
+.er-card-desc {
+  color: #b8b7b0 !important;
+  line-height: 1.7 !important;
+}
+
+/* Project taglines — more visible */
+.er-card-tagline {
+  color: #d0cec7 !important;
+}
+
+/* Highlight items */
+.er-highlight-item {
+  color: #c0beb7 !important;
+  font-size: 0.88rem !important;
+}
+
+/* Stack tags — readable at small size */
+.er-stack-tag {
+  color: #c8c5bd !important;
+}
+
+/* Evidence room lead text */
+.er-lead {
+  color: #bbb9b2 !important;
+}
+
+/* DevLog body text — more readable */
+.ep-log-body {
+  color: #b0aca4 !important;
+  line-height: 1.72 !important;
+}
+
+/* DevLog headline */
+.ep-log-headline {
+  color: #d4d0c8 !important;
+}
+
+/* Stack section drawer description */
+.ep-stack-desc {
+  color: #b5b0a8 !important;
+  line-height: 1.72 !important;
+}
+
+/* Stack topics */
+.ep-stack-topic {
+  color: #a8a49c !important;
+}
+
+/* Person bio */
+.ep-person-body {
+  color: #bbb9b1 !important;
+  line-height: 1.72 !important;
+}
+
+/* Social card notes */
+.ep-social-note {
+  color: #9e9a93 !important;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   PROJECT IMAGES — Fallback for broken images
+   Shows a styled placeholder instead of broken icon
+──────────────────────────────────────────────────────────── */
+
+.er-window-img {
+  /* Ensure image tries to load from correct path */
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  background: #141417;
+  /* On error, the alt text container shows */
+}
+
+/* When image fails, make window-body still look good */
+.er-window-body {
+  background: #0e0e11;
+  min-height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   "NOT JUST CODE" SECTION — Reduce excessive vertical space
+   ThePersonSection has generous padding, trim it slightly
+──────────────────────────────────────────────────────────── */
+
+.ep-person-section {
+  padding: clamp(4rem, 8vh, 6.5rem) 0 clamp(3rem, 6vh, 5.5rem) !important;
+}
+
+.ep-person-headline {
+  margin-bottom: 1.5rem !important;
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE PATCHES — Hero name on mobile
+──────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .giant-word {
+    font-size: clamp(2.2rem, 12vw, 5rem) !important;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .giant-name-row {
+    padding: 0 1rem;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  /* Group layout on mobile */
+  .ep-group-label-row {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .ep-skill-group .ep-stack-row-head {
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+  }
+
+  .ep-lastframe-cta-link {
+    font-size: 0.78rem;
+    padding: 0.7rem 1.4rem;
+  }
+
+  .ep-person-hinglish {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .giant-word {
+    font-size: clamp(1.9rem, 13.5vw, 4rem) !important;
+  }
+
+  .ep-group-label-row {
+    padding: 1rem 1.25rem;
+  }
+}
+
+/* Prevent any horizontal scroll from giant typography */
+body {
+  overflow-x: hidden;
+}
+
+.sde-main-content {
+  overflow-x: hidden;
+}

@@ -11,6 +11,7 @@ import CustomCursor from './components/CustomCursor'
 import './styles.css'
 import './editorial_lower.css'
 import './evidence_room.css'
+import './portfolio_polish.css'
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero')

@@ -60,15 +60,20 @@ export default function TheLastFrameSection() {
         </div>
 
         <h2 className="ep-lastframe-headline">
-          <span className="ep-lf-lets">LET'S</span>
+          <span className="ep-lf-lets">THE WORK</span>
           <br />
-          <span className="ep-lf-build ep-crimson">BUILD.</span>
+          <span className="ep-lf-build ep-crimson">CONTINUES.</span>
         </h2>
 
         <p className="ep-lastframe-sub">
-          Open to conversations about software engineering, backend collaboration, Java &amp; DSA, or anything interesting.
+          Project ho, experiment ho, ya koi crazy idea &mdash;
+          let's build it.
           <span className="ep-lf-devanagari" title="Let's Connect"> [जुड़ते हैं]</span>
         </p>
+
+        <a href={`mailto:${email}`} className="ep-lastframe-cta-link" aria-label="Start a conversation">
+          START SOMETHING →
+        </a>
 
         <div className="ep-email-block">
           <a href={`mailto:${email}`} className="ep-email-link" aria-label={`Send email to ${email}`}>
