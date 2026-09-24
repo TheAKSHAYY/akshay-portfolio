@@ -15,9 +15,10 @@ build/
 .env.test.local
 .env.production.local
 
-# Editor / OS files
+# Editor / OS / Agent files
 .vscode/
 .idea/
+.agents/
 *.suo
 *.ntvs*
 *.njsproj
